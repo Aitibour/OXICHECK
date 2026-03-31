@@ -1,0 +1,17 @@
+{
+  "name": "@hotelcheckin/pms-middleware",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PMS integration middleware — Cloudbeds, Mews, Lightspeed, etc.",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo 'PMS middleware build — not yet scaffolded'",
+    "dev": "echo 'PMS middleware dev — not yet scaffolded'",
+    "lint": "echo 'PMS middleware lint — not yet scaffolded'",
+    "test": "echo 'PMS middleware test — not yet scaffolded'",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@hotelcheckin/shared": "workspace:*"
+  }
+}

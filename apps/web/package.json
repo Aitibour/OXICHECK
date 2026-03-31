@@ -1,0 +1,16 @@
+{
+  "name": "@hotelcheckin/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HotelCheckIn Next.js frontend — hotel dashboard and guest flows",
+  "scripts": {
+    "build": "echo 'Web build — not yet scaffolded'",
+    "dev": "echo 'Web dev — not yet scaffolded'",
+    "lint": "echo 'Web lint — not yet scaffolded'",
+    "test": "echo 'Web test — not yet scaffolded'",
+    "clean": "rm -rf .next dist"
+  },
+  "dependencies": {
+    "@hotelcheckin/shared": "workspace:*"
+  }
+}

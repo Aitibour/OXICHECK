@@ -1,0 +1,24 @@
+{
+  "name": "hotelcheckin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hotel pre-check-in SaaS platform for Canadian independent hotels",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0",
+    "prettier": "^3.4.0",
+    "@types/node": "^20.17.0"
+  }
+}

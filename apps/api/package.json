@@ -1,0 +1,17 @@
+{
+  "name": "@hotelcheckin/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HotelCheckIn NestJS backend API",
+  "scripts": {
+    "build": "echo 'API build — not yet scaffolded'",
+    "dev": "echo 'API dev — not yet scaffolded'",
+    "lint": "echo 'API lint — not yet scaffolded'",
+    "test": "echo 'API test — not yet scaffolded'",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@hotelcheckin/shared": "workspace:*",
+    "@hotelcheckin/database": "workspace:*"
+  }
+}
