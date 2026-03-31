@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Abdel/.claude/projects/c--Users-Abdel-Documents-Claude-Code-Hopitality-CA/memory/**)",
+      "WebSearch"
+    ]
+  }
+}
