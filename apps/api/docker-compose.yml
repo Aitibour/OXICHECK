@@ -1,0 +1,63 @@
+# =============================================================================
+# HotelCheckIn API — Local Development Docker Compose
+# =============================================================================
+# Usage: docker compose up -d
+# =============================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hotelcheckin-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: hotelcheckin
+      POSTGRES_PASSWORD: hotelcheckin
+      POSTGRES_DB: hotelcheckin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hotelcheckin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: hotelcheckin-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ../../
+      dockerfile: apps/api/Dockerfile
+    container_name: hotelcheckin-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://hotelcheckin:hotelcheckin@postgres:5432/hotelcheckin?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: local-dev-secret-change-in-production
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
