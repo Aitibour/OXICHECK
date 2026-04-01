@@ -1,0 +1,592 @@
+// =============================================================================
+// HotelCheckIn — Prisma Schema
+// Multi-tenant SaaS for hotel pre-check-in
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// Enums
+// =============================================================================
+
+enum Role {
+  PLATFORM_ADMIN
+  PROPERTY_OWNER
+  GENERAL_MANAGER
+  FRONT_DESK_SUPERVISOR
+  FRONT_DESK_AGENT
+  REVENUE_MANAGER
+}
+
+enum BillingTier {
+  STARTER
+  GROWTH
+  SCALE
+  ENTERPRISE
+}
+
+enum PreCheckStatus {
+  NOT_STARTED
+  PARTIAL
+  COMPLETED
+}
+
+enum UpsellCategory {
+  BREAKFAST
+  SPA
+  AIRPORT_PICKUP
+  ROOM_UPGRADE
+  EARLY_CHECKIN
+  LATE_CHECKOUT
+  PARKING
+  CELEBRATION
+}
+
+enum ReservationStatus {
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum UpsellRuleOperator {
+  EQUALS
+  NOT_EQUALS
+  GREATER_THAN
+  LESS_THAN
+  IN
+  NOT_IN
+}
+
+enum UpsellSelectionStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentGateway {
+  STRIPE
+  MONERIS
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentType {
+  PRE_AUTH
+  CHARGE
+  REFUND
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  TRIALING
+}
+
+enum UsageEventType {
+  PRE_CHECK_COMPLETED
+  EMAIL_SENT
+  SMS_SENT
+}
+
+enum CommunicationType {
+  PRE_CHECK_INVITE
+  REMINDER
+  CONFIRMATION
+  POST_STAY
+}
+
+enum CommunicationChannel {
+  EMAIL
+  SMS
+}
+
+enum CommunicationStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  FAILED
+}
+
+enum ConsentType {
+  PRIVACY_POLICY
+  ID_COLLECTION
+  MARKETING_COMMUNICATIONS
+  DATA_PROCESSING
+}
+
+enum PmsSyncDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum PmsSyncStatus {
+  SUCCESS
+  FAILED
+  PARTIAL
+}
+
+// =============================================================================
+// Core Multi-Tenant Models
+// =============================================================================
+
+model Organization {
+  id                String   @id @default(uuid())
+  name              String
+  slug              String   @unique
+  stripeCustomerId  String?
+  billingTier       BillingTier @default(STARTER)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  properties   Property[]
+  users        User[]
+  subscription Subscription?
+  usageRecords UsageRecord[]
+  auditLogs    AuditLog[]
+
+  @@map("organizations")
+}
+
+model Property {
+  id              String   @id @default(uuid())
+  organizationId  String
+  name            String
+  slug            String
+  address         String
+  city            String
+  province        String
+  postalCode      String
+  country         String   @default("CA")
+  timezone        String   @default("America/Toronto")
+  defaultLocale   String   @default("en")
+  roomCount       Int
+  pmsVendor       String?
+  /// Encrypted — never expose in API responses
+  pmsApiKey       String?
+  pmsPropertyId   String?
+  logoUrl         String?
+  primaryColor    String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organization          Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  guests                Guest[]
+  reservations          Reservation[]
+  upsellOffers          UpsellOffer[]
+  payments              Payment[]
+  usageRecords          UsageRecord[]
+  communicationTemplates CommunicationTemplate[]
+  pmsSyncLogs           PmsSyncLog[]
+  userAccess            UserPropertyAccess[]
+
+  @@unique([organizationId, slug])
+  @@index([organizationId])
+  @@map("properties")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  organizationId  String
+  email           String   @unique
+  /// Bcrypt hash — never expose in API responses
+  passwordHash    String
+  firstName       String
+  lastName        String
+  role            Role
+  isActive        Boolean  @default(true)
+  mfaEnabled      Boolean  @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organization    Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  propertyAccess  UserPropertyAccess[]
+  auditLogs       AuditLog[]
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("users")
+}
+
+model UserPropertyAccess {
+  userId     String
+  propertyId String
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, propertyId])
+  @@map("user_property_access")
+}
+
+// =============================================================================
+// Guest & Reservation Models
+// =============================================================================
+
+model Guest {
+  id         String   @id @default(uuid())
+  propertyId String
+  email      String
+  firstName  String
+  lastName   String
+  phone      String?
+  locale     String   @default("en")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  property       Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  reservations   Reservation[]
+  consentRecords ConsentRecord[]
+
+  @@unique([propertyId, email])
+  @@index([propertyId])
+  @@index([email])
+  @@map("guests")
+}
+
+model Reservation {
+  id                    String            @id @default(uuid())
+  propertyId            String
+  guestId               String
+  externalPmsId         String?
+  confirmationNumber    String?
+  checkInDate           DateTime          @db.Date
+  checkOutDate          DateTime          @db.Date
+  roomType              String?
+  roomNumber            String?
+  rateCode              String?
+  bookingSource         String?
+  nightsCount           Int
+  adultsCount           Int               @default(1)
+  childrenCount         Int               @default(0)
+  status                ReservationStatus @default(CONFIRMED)
+  preCheckStatus        PreCheckStatus    @default(NOT_STARTED)
+  preCheckCompletedAt   DateTime?
+  preCheckToken         String            @unique @default(uuid())
+  preCheckTokenExpiresAt DateTime
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  property            Property            @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  guest               Guest               @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  preCheckSubmission  PreCheckSubmission?
+  upsellSelections    UpsellSelection[]
+  upsellImpressions   UpsellImpression[]
+  payments            Payment[]
+  communicationLogs   CommunicationLog[]
+  consentRecords      ConsentRecord[]
+
+  @@index([propertyId])
+  @@index([guestId])
+  @@index([checkInDate])
+  @@index([preCheckToken])
+  @@index([propertyId, checkInDate])
+  @@map("reservations")
+}
+
+// =============================================================================
+// Pre-Check-In Models
+// =============================================================================
+
+model PreCheckSubmission {
+  id                     String    @id @default(uuid())
+  reservationId          String    @unique
+  guestProfileCompleted  Boolean   @default(false)
+  stayDetailsConfirmed   Boolean   @default(false)
+  policiesAccepted       Boolean   @default(false)
+  specialRequests        String?   @db.Text
+  idImageUrl             String?
+  idUploadConsentGiven   Boolean   @default(false)
+  idDeletedAt            DateTime?
+  signatureDataUrl       String?   @db.Text
+  completedSteps         Json      @default("[]")
+  completedAt            DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId])
+  @@map("pre_check_submissions")
+}
+
+// =============================================================================
+// Upsell Models
+// =============================================================================
+
+model UpsellOffer {
+  id            String         @id @default(uuid())
+  propertyId    String
+  category      UpsellCategory
+  title         String
+  titleFr       String?
+  description   String         @db.Text
+  descriptionFr String?        @db.Text
+  priceInCents  Int
+  currency      String         @default("CAD")
+  isActive      Boolean        @default(true)
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  property    Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  rules       UpsellRule[]
+  selections  UpsellSelection[]
+  impressions UpsellImpression[]
+
+  @@index([propertyId])
+  @@index([propertyId, isActive])
+  @@map("upsell_offers")
+}
+
+model UpsellRule {
+  id         String             @id @default(uuid())
+  offerId    String
+  attribute  String
+  operator   UpsellRuleOperator
+  value      String
+  logicGroup Int                @default(0)
+  createdAt  DateTime           @default(now())
+
+  offer UpsellOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@index([offerId])
+  @@map("upsell_rules")
+}
+
+model UpsellSelection {
+  id               String                @id @default(uuid())
+  reservationId    String
+  offerId          String
+  quantity         Int                   @default(1)
+  totalPriceInCents Int
+  status           UpsellSelectionStatus @default(PENDING)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  offer       UpsellOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId])
+  @@index([offerId])
+  @@map("upsell_selections")
+}
+
+model UpsellImpression {
+  id            String   @id @default(uuid())
+  offerId       String
+  reservationId String
+  viewedAt      DateTime @default(now())
+
+  offer       UpsellOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([offerId])
+  @@index([reservationId])
+  @@map("upsell_impressions")
+}
+
+// =============================================================================
+// Payment Models
+// =============================================================================
+
+model Payment {
+  id               String         @id @default(uuid())
+  reservationId    String
+  propertyId       String
+  amountInCents    Int
+  currency         String         @default("CAD")
+  gateway          PaymentGateway
+  gatewayPaymentId String?
+  status           PaymentStatus  @default(PENDING)
+  type             PaymentType
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  property    Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId])
+  @@index([propertyId])
+  @@index([gatewayPaymentId])
+  @@map("payments")
+}
+
+// =============================================================================
+// Billing Models
+// =============================================================================
+
+model Subscription {
+  id                      String             @id @default(uuid())
+  organizationId          String             @unique
+  stripeSubscriptionId    String?
+  tier                    BillingTier        @default(STARTER)
+  status                  SubscriptionStatus @default(TRIALING)
+  currentPeriodStart      DateTime
+  currentPeriodEnd        DateTime
+  annualCheckInAllowance  Int
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("subscriptions")
+}
+
+model UsageRecord {
+  id             String         @id @default(uuid())
+  organizationId String
+  propertyId     String
+  eventType      UsageEventType
+  count          Int            @default(1)
+  periodStart    DateTime
+  periodEnd      DateTime
+  createdAt      DateTime       @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  property     Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([propertyId])
+  @@index([periodStart, periodEnd])
+  @@map("usage_records")
+}
+
+// =============================================================================
+// Communication Models
+// =============================================================================
+
+model CommunicationTemplate {
+  id         String               @id @default(uuid())
+  propertyId String
+  type       CommunicationType
+  channel    CommunicationChannel
+  subjectEn  String?
+  subjectFr  String?
+  bodyEn     String               @db.Text
+  bodyFr     String               @db.Text
+  isActive   Boolean              @default(true)
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+
+  property          Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  communicationLogs CommunicationLog[]
+
+  @@index([propertyId])
+  @@index([propertyId, type, channel])
+  @@map("communication_templates")
+}
+
+model CommunicationLog {
+  id              String              @id @default(uuid())
+  reservationId   String
+  templateId      String?
+  channel         CommunicationChannel
+  recipientEmail  String?
+  recipientPhone  String?
+  status          CommunicationStatus @default(QUEUED)
+  sentAt          DateTime?
+  deliveredAt     DateTime?
+  openedAt        DateTime?
+  metadata        Json?
+  createdAt       DateTime            @default(now())
+
+  reservation Reservation            @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  template    CommunicationTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@index([reservationId])
+  @@index([templateId])
+  @@map("communication_logs")
+}
+
+// =============================================================================
+// Audit & Security Models
+// =============================================================================
+
+model AuditLog {
+  id             String   @id @default(uuid())
+  organizationId String?
+  userId         String?
+  action         String
+  resource       String
+  resourceId     String?
+  details        Json?
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([resource, resourceId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model ConsentRecord {
+  id            String      @id @default(uuid())
+  guestId       String
+  reservationId String?
+  consentType   ConsentType
+  consentGiven  Boolean
+  consentText   String      @db.Text
+  ipAddress     String?
+  givenAt       DateTime    @default(now())
+  revokedAt     DateTime?
+
+  guest       Guest        @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  reservation Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+
+  @@index([guestId])
+  @@index([reservationId])
+  @@map("consent_records")
+}
+
+// =============================================================================
+// PMS Sync Models
+// =============================================================================
+
+model PmsSyncLog {
+  id              String          @id @default(uuid())
+  propertyId      String
+  direction       PmsSyncDirection
+  entityType      String
+  entityId        String?
+  status          PmsSyncStatus
+  errorMessage    String?         @db.Text
+  requestPayload  Json?
+  responsePayload Json?
+  syncedAt        DateTime
+  createdAt       DateTime        @default(now())
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+  @@index([propertyId, entityType])
+  @@index([syncedAt])
+  @@map("pms_sync_logs")
+}
