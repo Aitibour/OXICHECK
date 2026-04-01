@@ -1,0 +1,75 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: false
+          tags: |
+            hotelcheckin-api:staging-${{ github.sha }}
+            hotelcheckin-api:staging-latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # ---------------------------------------------------------------
+      # Azure Container Apps deployment (uncomment when ready)
+      # ---------------------------------------------------------------
+      # Prerequisites:
+      #   1. Create an Azure Container Apps environment
+      #   2. Create a Container App named "hotelcheckin-api-staging"
+      #   3. Create an Azure Container Registry (ACR)
+      #   4. Add these GitHub secrets:
+      #      - AZURE_CREDENTIALS (service principal JSON)
+      #      - ACR_LOGIN_SERVER (e.g. hotelcheckin.azurecr.io)
+      #      - ACR_USERNAME
+      #      - ACR_PASSWORD
+      #
+      # - name: Log in to Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #
+      # - name: Log in to ACR
+      #   uses: azure/docker-login@v2
+      #   with:
+      #     login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+      #     username: ${{ secrets.ACR_USERNAME }}
+      #     password: ${{ secrets.ACR_PASSWORD }}
+      #
+      # - name: Push image to ACR
+      #   run: |
+      #     docker tag hotelcheckin-api:staging-${{ github.sha }} ${{ secrets.ACR_LOGIN_SERVER }}/hotelcheckin-api:staging-${{ github.sha }}
+      #     docker push ${{ secrets.ACR_LOGIN_SERVER }}/hotelcheckin-api:staging-${{ github.sha }}
+      #
+      # - name: Deploy to Azure Container Apps
+      #   uses: azure/container-apps-deploy-action@v2
+      #   with:
+      #     containerAppName: hotelcheckin-api-staging
+      #     resourceGroup: hotelcheckin-staging-rg
+      #     imageToDeploy: ${{ secrets.ACR_LOGIN_SERVER }}/hotelcheckin-api:staging-${{ github.sha }}
+
+      - name: Deployment placeholder
+        run: |
+          echo "Docker image built and tagged for staging."
+          echo "Image: hotelcheckin-api:staging-${{ github.sha }}"
+          echo "To enable deployment, uncomment the Azure steps above and configure secrets."
