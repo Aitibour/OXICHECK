@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { BillingService } from './billing.service';
+import { InvoiceService } from './invoice.service';
+import { TierManagementService } from './tier-management.service';
 import { BillingController } from './billing.controller';
 import { STRIPE_PROVIDER } from './billing.constants';
 
@@ -21,7 +23,9 @@ import { STRIPE_PROVIDER } from './billing.constants';
       inject: [ConfigService],
     },
     BillingService,
+    InvoiceService,
+    TierManagementService,
   ],
-  exports: [BillingService],
+  exports: [BillingService, InvoiceService, TierManagementService],
 })
 export class BillingModule {}

@@ -544,3 +544,150 @@ export async function getPaymentSummary(
   const q = new URLSearchParams({ propertyId, from: dateRange.from, to: dateRange.to });
   return authorizedRequest<PaymentSummary>(`/payments/summary?${q.toString()}`);
 }
+
+// ---------------------------------------------------------------------------
+// Billing — Subscription & Usage
+// ---------------------------------------------------------------------------
+
+export interface BillingSubscription {
+  id: string;
+  tier: string;
+  status: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  annualCheckInAllowance: number;
+  usage: {
+    periodStart: string;
+    periodEnd: string;
+    byEventType: Array<{ eventType: string; total: number }>;
+    byProperty: Array<{ propertyId: string; eventType: string; total: number }>;
+  };
+  tierConfig: {
+    annualAllowance: number;
+    monthlyPrice: number;
+    overagePerUnit: number;
+  };
+}
+
+export interface OverageStatus {
+  organizationId: string;
+  tier: string;
+  allowance: number;
+  used: number;
+  overageUnits: number;
+  overageRatePerUnit: number;
+  overageAmountCad: number;
+  isOverage: boolean;
+  periodStart: string;
+  periodEnd: string;
+}
+
+export interface TierOption {
+  tier: string;
+  annualAllowance: number;
+  monthlyPriceCad: number;
+  annualPriceCad: number;
+  overagePerUnit: number;
+}
+
+export interface TierRecommendation {
+  currentTier: string;
+  recommendedTier: string;
+  reason: string;
+  currentMonthlyCostCad: number;
+  recommendedMonthlyCostCad: number;
+  monthlySavingsCad: number;
+  trailing12mCheckIns: number;
+  projectedAnnualCheckIns: number;
+}
+
+export interface CostEstimate {
+  tier: string;
+  projectedMonthlyUsage: number;
+  baseMonthlyPriceCad: number;
+  estimatedOverageCad: number;
+  estimatedTotalMonthlyCad: number;
+  annualAllowance: number;
+  monthlyAllowance: number;
+  isWithinAllowance: boolean;
+  overageUnits: number;
+}
+
+export interface StripeInvoiceSummary {
+  id: string;
+  number: string | null;
+  status: string | null;
+  amountDueCad: number;
+  amountPaidCad: number;
+  currency: string;
+  periodStart: string | null;
+  periodEnd: string | null;
+  invoicePdfUrl: string | null;
+  hostedInvoiceUrl: string | null;
+  createdAt: string;
+}
+
+export interface InvoiceHistoryResponse {
+  data: StripeInvoiceSummary[];
+  hasMore: boolean;
+}
+
+export async function getBillingSubscription(): Promise<BillingSubscription> {
+  return authorizedRequest<BillingSubscription>('/billing/subscription');
+}
+
+export async function getOverageStatus(): Promise<OverageStatus> {
+  return authorizedRequest<OverageStatus>('/billing/overage');
+}
+
+export async function getAvailableTiers(): Promise<TierOption[]> {
+  return authorizedRequest<TierOption[]>('/billing/tiers');
+}
+
+export async function getTierRecommendation(): Promise<TierRecommendation> {
+  return authorizedRequest<TierRecommendation>('/billing/tiers/recommendation');
+}
+
+export async function estimateMonthlyCost(
+  tier: string,
+  projectedMonthlyUsage: number,
+): Promise<CostEstimate> {
+  const q = new URLSearchParams({
+    tier,
+    projectedMonthlyUsage: String(projectedMonthlyUsage),
+  });
+  return authorizedRequest<CostEstimate>(`/billing/estimate?${q.toString()}`);
+}
+
+export async function getInvoiceHistory(params: {
+  limit?: number;
+  startingAfter?: string;
+} = {}): Promise<InvoiceHistoryResponse> {
+  const q = new URLSearchParams();
+  if (params.limit) q.set('limit', String(params.limit));
+  if (params.startingAfter) q.set('startingAfter', params.startingAfter);
+  const qs = q.toString();
+  return authorizedRequest<InvoiceHistoryResponse>(
+    `/billing/invoices${qs ? `?${qs}` : ''}`,
+  );
+}
+
+export async function getInvoice(stripeInvoiceId: string): Promise<StripeInvoiceSummary> {
+  return authorizedRequest<StripeInvoiceSummary>(`/billing/invoices/${stripeInvoiceId}`);
+}
+
+export function getInvoicePdfUrl(
+  stripeInvoiceId: string,
+  periodStart: string,
+  periodEnd: string,
+): string {
+  const q = new URLSearchParams({ periodStart, periodEnd });
+  return `${API_BASE}/billing/invoices/${stripeInvoiceId}/pdf?${q.toString()}`;
+}
+
+export async function changeBillingTier(newTier: string): Promise<BillingSubscription> {
+  return authorizedRequest<BillingSubscription>('/billing/subscription/tier', {
+    method: 'PATCH',
+    body: JSON.stringify({ newTier }),
+  });
+}
