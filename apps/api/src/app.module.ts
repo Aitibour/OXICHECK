@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import configuration from './config/configuration';
 import { validate } from './config/validation';
+import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { OrganizationsModule } from './organizations/organizations.module';
@@ -23,6 +24,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
       load: [configuration],
       validate,
     }),
+    PrismaModule,
     HealthModule,
     AuthModule,
     OrganizationsModule,
