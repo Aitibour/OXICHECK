@@ -16,6 +16,7 @@ import { BillingModule } from './billing/billing.module';
 import { CommunicationsModule } from './communications/communications.module';
 import { PmsModule } from './pms/pms.module';
 import { PaymentsModule } from './payments/payments.module';
+import { ReportsModule } from './reports/reports.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 
 @Module({
@@ -38,6 +39,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     CommunicationsModule,
     PmsModule,
     PaymentsModule,
+    ReportsModule,
   ],
   providers: [
     {
