@@ -16,6 +16,7 @@ const navItems: NavItem[] = [
   { label: 'Guests', href: '/dashboard/guests', icon: '👤' },
   { label: 'Templates', href: '/dashboard/templates', icon: '✉' },
   { label: 'Upsells', href: '/dashboard/upsells', icon: '⭐' },
+  { label: 'Reports', href: '/dashboard/reports', icon: '📊' },
   { label: 'Settings', href: '/dashboard/settings', icon: '⚙' },
 ];
 

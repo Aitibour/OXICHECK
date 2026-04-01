@@ -25,6 +25,84 @@ export interface DashboardStats {
   }>;
 }
 
+export interface UpsellOffer {
+  id: string;
+  propertyId: string;
+  category: string;
+  titleEn: string;
+  titleFr: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
+  priceInCents: number;
+  currency: string;
+  isActive: boolean;
+  sortOrder?: number;
+  rulesCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsellRule {
+  id: string;
+  offerId: string;
+  attribute: string;
+  operator: string;
+  value: string | string[] | number;
+  logicGroup?: number;
+}
+
+export interface UpsellOfferBreakdown {
+  offerId: string;
+  offerTitle: string;
+  impressions: number;
+  selections: number;
+  revenueCents?: number;
+}
+
+export interface UpsellAnalytics {
+  propertyId: string;
+  impressions: number;
+  selections: number;
+  totalRevenueCents?: number;
+  offerBreakdown?: UpsellOfferBreakdown[];
+}
+
+export interface CommunicationTemplate {
+  id: string;
+  propertyId: string;
+  type: string;
+  channel: string;
+  subjectEn?: string;
+  subjectFr?: string;
+  bodyEn: string;
+  bodyFr: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DeliveryStats {
+  sent?: number;
+  delivered?: number;
+  opened?: number;
+  clicked?: number;
+  bounced?: number;
+  openRate?: number;
+}
+
+export interface PaymentSummary {
+  totalCollectedCents?: number;
+  totalPendingCents?: number;
+  totalRefundedCents?: number;
+  failed?: number;
+}
+
+export interface DateRangeParams {
+  from: string;
+  to: string;
+  offerId?: string;
+}
+
 export interface GuestSummary {
   id: string;
   firstName: string;
@@ -324,4 +402,145 @@ export async function getDashboardStats(
   return authorizedRequest<DashboardStats>(
     `/reservations/stats/${propertyId}${params}`,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Upsell Offers
+// ---------------------------------------------------------------------------
+
+export async function getUpsellOffers(propertyId: string): Promise<UpsellOffer[]> {
+  return authorizedRequest<UpsellOffer[]>(`/upsells?propertyId=${propertyId}`);
+}
+
+export async function getUpsellOffer(id: string): Promise<UpsellOffer> {
+  return authorizedRequest<UpsellOffer>(`/upsells/${id}`);
+}
+
+export async function createUpsellOffer(
+  data: Partial<UpsellOffer>,
+): Promise<UpsellOffer> {
+  return authorizedRequest<UpsellOffer>('/upsells', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateUpsellOffer(
+  id: string,
+  data: Partial<UpsellOffer>,
+): Promise<UpsellOffer> {
+  return authorizedRequest<UpsellOffer>(`/upsells/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteUpsellOffer(id: string): Promise<void> {
+  return authorizedRequest<void>(`/upsells/${id}`, { method: 'DELETE' });
+}
+
+// ---------------------------------------------------------------------------
+// Upsell Rules
+// ---------------------------------------------------------------------------
+
+export async function getUpsellRules(offerId: string): Promise<UpsellRule[]> {
+  return authorizedRequest<UpsellRule[]>(`/upsells/${offerId}/rules`);
+}
+
+export async function createUpsellRule(
+  offerId: string,
+  data: Partial<UpsellRule>,
+): Promise<UpsellRule> {
+  return authorizedRequest<UpsellRule>(`/upsells/${offerId}/rules`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateUpsellRule(
+  id: string,
+  data: Partial<UpsellRule>,
+): Promise<UpsellRule> {
+  return authorizedRequest<UpsellRule>(`/upsells/rules/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteUpsellRule(id: string): Promise<void> {
+  return authorizedRequest<void>(`/upsells/rules/${id}`, { method: 'DELETE' });
+}
+
+// ---------------------------------------------------------------------------
+// Upsell Analytics
+// ---------------------------------------------------------------------------
+
+export async function getUpsellAnalytics(
+  propertyId: string,
+  dateRange: DateRangeParams,
+): Promise<UpsellAnalytics> {
+  const q = new URLSearchParams({ propertyId, from: dateRange.from, to: dateRange.to });
+  if (dateRange.offerId) q.set('offerId', dateRange.offerId);
+  return authorizedRequest<UpsellAnalytics>(`/upsells/analytics?${q.toString()}`);
+}
+
+// ---------------------------------------------------------------------------
+// Communication Templates
+// ---------------------------------------------------------------------------
+
+export async function getTemplates(propertyId: string): Promise<CommunicationTemplate[]> {
+  return authorizedRequest<CommunicationTemplate[]>(
+    `/communications/templates?propertyId=${propertyId}`,
+  );
+}
+
+export async function getTemplate(id: string): Promise<CommunicationTemplate> {
+  return authorizedRequest<CommunicationTemplate>(`/communications/templates/${id}`);
+}
+
+export async function updateTemplate(
+  id: string,
+  data: Partial<CommunicationTemplate>,
+): Promise<CommunicationTemplate> {
+  return authorizedRequest<CommunicationTemplate>(`/communications/templates/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Delivery Stats & Communication Logs
+// ---------------------------------------------------------------------------
+
+export async function getDeliveryStats(
+  propertyId: string,
+  dateRange: DateRangeParams,
+): Promise<DeliveryStats> {
+  const q = new URLSearchParams({ propertyId, from: dateRange.from, to: dateRange.to });
+  return authorizedRequest<DeliveryStats>(`/communications/stats?${q.toString()}`);
+}
+
+export async function getCommunicationLogs(
+  propertyId: string,
+  params: { page?: number; limit?: number; templateType?: string } = {},
+) {
+  const q = new URLSearchParams({ propertyId });
+  if (params.page) q.set('page', String(params.page));
+  if (params.limit) q.set('limit', String(params.limit));
+  if (params.templateType) q.set('templateType', params.templateType);
+  return authorizedRequest<{ data: unknown[]; meta: { total: number; page: number; limit: number; totalPages: number } }>(
+    `/communications/logs?${q.toString()}`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Payments
+// ---------------------------------------------------------------------------
+
+export async function getPaymentSummary(
+  propertyId: string,
+  dateRange: DateRangeParams,
+): Promise<PaymentSummary> {
+  const q = new URLSearchParams({ propertyId, from: dateRange.from, to: dateRange.to });
+  return authorizedRequest<PaymentSummary>(`/payments/summary?${q.toString()}`);
 }
