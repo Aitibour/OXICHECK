@@ -15,6 +15,7 @@ import { UpsellsModule } from './upsells/upsells.module';
 import { BillingModule } from './billing/billing.module';
 import { CommunicationsModule } from './communications/communications.module';
 import { PmsModule } from './pms/pms.module';
+import { PaymentsModule } from './payments/payments.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 
 @Module({
@@ -36,6 +37,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     BillingModule,
     CommunicationsModule,
     PmsModule,
+    PaymentsModule,
   ],
   providers: [
     {
