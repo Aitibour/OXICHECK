@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import configuration from './config/configuration';
 import { validate } from './config/validation';
 import { PrismaModule } from './prisma/prisma.module';
@@ -18,6 +19,8 @@ import { PmsModule } from './pms/pms.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReportsModule } from './reports/reports.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
+import { TenantContextMiddleware } from './common/middleware/tenant-context.middleware';
+import { throttlerConfig } from './common/middleware/rate-limit.middleware';
 
 @Module({
   imports: [
@@ -26,6 +29,11 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
       load: [configuration],
       validate,
     }),
+
+    // Rate limiting — applies globally via ThrottlerGuard registered below.
+    // Individual controllers/routes can override with @Throttle() decorator.
+    ThrottlerModule.forRoot(throttlerConfig),
+
     PrismaModule,
     HealthModule,
     AuthModule,
@@ -42,10 +50,29 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     ReportsModule,
   ],
   providers: [
+    // Apply rate-limiting globally
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    // Audit log every mutating request
     {
       provide: APP_INTERCEPTOR,
       useClass: AuditLogInterceptor,
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    // Attach tenant context middleware to all routes except the health check
+    // and the public pre-check-in flow.  The middleware is a no-op when no
+    // Authorization header is present, so it is safe to apply broadly.
+    consumer
+      .apply(TenantContextMiddleware)
+      .exclude(
+        { path: 'api/health', method: RequestMethod.GET },
+        { path: 'api/checkin/(.*)', method: RequestMethod.ALL },
+      )
+      .forRoutes('*');
+  }
+}
