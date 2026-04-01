@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default brand colors — overridden dynamically per hotel */
+  --brand-primary: #2563eb;
+  --brand-primary-hover: #1d4ed8;
+  --brand-secondary: #64748b;
+  --brand-secondary-hover: #475569;
+  --brand-accent: #f59e0b;
+  --brand-radius: 0.5rem;
+
+  /* Neutral palette */
+  --color-bg: #ffffff;
+  --color-bg-muted: #f8fafc;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-[var(--color-bg)] text-[var(--color-text)] font-sans;
+  }
+
+  /* Focus ring — WCAG 2.1 AA compliant */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-primary;
+  }
+
+  /* Skip-to-content link for screen readers */
+  .skip-link {
+    @apply absolute -top-10 left-4 z-50 bg-brand-primary text-white px-4 py-2 rounded-brand transition-all;
+  }
+
+  .skip-link:focus {
+    @apply top-4;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-brand border border-[var(--color-border)] shadow-sm;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-[var(--color-text)] mb-1;
+  }
+
+  .form-input {
+    @apply w-full rounded-brand border border-[var(--color-border)] px-3 py-2 text-sm
+      focus:border-brand-primary focus:ring-1 focus:ring-brand-primary
+      disabled:bg-gray-50 disabled:text-gray-500;
+  }
+
+  .form-error {
+    @apply text-sm text-red-600 mt-1;
+  }
+}

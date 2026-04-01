@@ -1,0 +1,169 @@
+{
+  "common": {
+    "appName": "HotelCheckIn",
+    "next": "Suivant",
+    "back": "Retour",
+    "skip": "Passer",
+    "submit": "Soumettre",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "required": "Obligatoire",
+    "optional": "Facultatif",
+    "yes": "Oui",
+    "no": "Non",
+    "errorOccurred": "Une erreur est survenue",
+    "tryAgain": "Réessayer",
+    "poweredBy": "Propulsé par HotelCheckIn",
+    "stepOf": "Étape {current} sur {total}"
+  },
+  "precheck": {
+    "title": "Pré-enregistrement",
+    "subtitle": "Complétez vos informations avant votre arrivée",
+    "welcome": "Bienvenue, {name}\u00a0!",
+    "welcomeGeneric": "Bienvenue\u00a0!",
+    "progressLabel": "Progression de l'enregistrement",
+
+    "steps": {
+      "profile": "Votre profil",
+      "stayDetails": "Détails du séjour",
+      "policies": "Politiques",
+      "upsells": "Améliorez votre séjour",
+      "idUpload": "Vérification d'identité",
+      "confirmation": "Confirmation"
+    },
+
+    "profile": {
+      "heading": "Vos coordonnées",
+      "description": "Veuillez confirmer ou mettre à jour vos informations de contact.",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "email": "Adresse courriel",
+      "phone": "Numéro de téléphone",
+      "preferredLanguage": "Langue préférée",
+      "english": "Anglais",
+      "french": "Français"
+    },
+
+    "stayDetails": {
+      "heading": "Votre séjour",
+      "description": "Vérifiez et mettez à jour les détails de votre séjour.",
+      "checkIn": "Date d'arrivée",
+      "checkOut": "Date de départ",
+      "nights": "{count, plural, one {1 nuit} other {# nuits}}",
+      "roomType": "Type de chambre",
+      "adults": "Adultes",
+      "children": "Enfants",
+      "specialRequests": "Demandes spéciales",
+      "specialRequestsPlaceholder": "Faites-nous savoir si vous avez des demandes particulières...",
+      "arrivalTime": "Heure d'arrivée estimée",
+      "selectTime": "Sélectionnez l'heure d'arrivée"
+    },
+
+    "policies": {
+      "heading": "Politiques de l'hôtel",
+      "description": "Veuillez lire et accepter les politiques suivantes pour continuer.",
+      "cancellationPolicy": "Politique d'annulation",
+      "houseRules": "Règlement intérieur",
+      "privacyPolicy": "Politique de confidentialité",
+      "acceptPolicy": "J'ai lu et j'accepte la {policy}",
+      "dataConsent": "Je consens à la collecte et au traitement de mes renseignements personnels conformément à la LPRPDE et à la Loi 25 du Québec.",
+      "dataConsentDescription": "Vos données personnelles seront utilisées uniquement dans le cadre de votre séjour et seront traitées conformément aux lois canadiennes sur la protection de la vie privée.",
+      "marketingOptIn": "Je souhaite recevoir des offres promotionnelles et des nouvelles de cet hôtel.",
+      "marketingOptInDescription": "Vous pouvez vous désabonner à tout moment. Ceci est facultatif.",
+      "allPoliciesRequired": "Vous devez accepter toutes les politiques obligatoires pour continuer."
+    },
+
+    "upsells": {
+      "heading": "Améliorez votre séjour",
+      "description": "Ajoutez des extras pour rendre votre séjour encore meilleur.",
+      "noOffers": "Aucune offre n'est actuellement disponible pour votre séjour.",
+      "addToStay": "Ajouter",
+      "removeFromStay": "Retirer",
+      "selected": "Sélectionné",
+      "runningTotal": "Total des extras",
+      "skipUpsells": "Non merci, continuer",
+      "categories": {
+        "BREAKFAST": "Petit-déjeuner",
+        "SPA": "Spa et bien-être",
+        "AIRPORT_PICKUP": "Navette aéroport",
+        "ROOM_UPGRADE": "Surclassement de chambre",
+        "EARLY_CHECKIN": "Arrivée anticipée",
+        "LATE_CHECKOUT": "Départ tardif",
+        "PARKING": "Stationnement",
+        "CELEBRATION": "Forfait célébration"
+      }
+    },
+
+    "idUpload": {
+      "heading": "Vérification d'identité",
+      "description": "Téléversez une pièce d'identité avec photo émise par le gouvernement pour un enregistrement plus rapide à la réception.",
+      "consentNotice": "Votre pièce d'identité sera stockée de manière sécurisée et automatiquement supprimée dans les 24 heures suivant votre enregistrement.",
+      "consentCheckbox": "Je consens au stockage temporaire de ma pièce d'identité à des fins de vérification.",
+      "uploadLabel": "Téléversez votre pièce d'identité",
+      "uploadHint": "Formats acceptés\u00a0: JPG, PNG, PDF (max 10 Mo)",
+      "takePhoto": "Prendre une photo",
+      "chooseFile": "Choisir un fichier",
+      "preview": "Aperçu de la pièce d'identité",
+      "removeFile": "Supprimer le fichier téléversé",
+      "skipStep": "Passer cette étape"
+    },
+
+    "confirmation": {
+      "heading": "Révision et confirmation",
+      "description": "Veuillez vérifier vos informations avant de soumettre.",
+      "profileSection": "Votre profil",
+      "staySection": "Détails du séjour",
+      "policiesSection": "Politiques acceptées",
+      "upsellsSection": "Extras sélectionnés",
+      "idSection": "Vérification d'identité",
+      "noneSelected": "Aucun sélectionné",
+      "idUploaded": "Pièce d'identité téléversée",
+      "idNotUploaded": "Non téléversée",
+      "totalExtras": "Total des extras",
+      "submitCheckin": "Compléter le pré-enregistrement",
+      "submitting": "Soumission en cours...",
+      "successTitle": "Pré-enregistrement terminé\u00a0!",
+      "successMessage": "Tout est prêt. Nous avons hâte de vous accueillir le {date}.",
+      "successInstructions": "À votre arrivée, rendez-vous à la réception et mentionnez que vous avez complété votre pré-enregistrement."
+    }
+  },
+
+  "errors": {
+    "invalidToken": "Lien d'enregistrement invalide",
+    "invalidTokenMessage": "Ce lien d'enregistrement est invalide ou a expiré. Veuillez contacter l'hôtel pour obtenir un nouveau lien.",
+    "expiredToken": "Lien expiré",
+    "expiredTokenMessage": "Votre lien de pré-enregistrement a expiré. Veuillez contacter l'hôtel pour obtenir de l'aide.",
+    "networkError": "Erreur de connexion",
+    "networkErrorMessage": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion et réessayer.",
+    "serverError": "Une erreur est survenue",
+    "serverErrorMessage": "Nous éprouvons un problème technique. Veuillez réessayer dans quelques minutes.",
+    "contactHotel": "Contacter l'hôtel",
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "invalidEmail": "Veuillez entrer une adresse courriel valide",
+      "invalidPhone": "Veuillez entrer un numéro de téléphone valide",
+      "minLength": "Doit contenir au moins {min} caractères",
+      "maxLength": "Doit contenir au plus {max} caractères",
+      "fileTooBig": "Le fichier est trop volumineux. Taille maximale\u00a0: {max} Mo.",
+      "invalidFileType": "Type de fichier invalide. Formats acceptés\u00a0: {types}"
+    }
+  },
+
+  "accessibility": {
+    "mainContent": "Contenu principal",
+    "navigation": "Navigation",
+    "progressBar": "Progression de l'enregistrement\u00a0: étape {current} sur {total}",
+    "stepComplete": "Étape {step} terminée",
+    "stepCurrent": "Étape en cours\u00a0: {step}",
+    "stepUpcoming": "Prochaine étape\u00a0: {step}",
+    "languageSwitcher": "Changer de langue",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "loadingContent": "Chargement du contenu, veuillez patienter",
+    "formError": "Le formulaire contient des erreurs. Veuillez les corriger.",
+    "fileUploadArea": "Zone de téléversement. Cliquez ou glissez un fichier pour le téléverser."
+  }
+}

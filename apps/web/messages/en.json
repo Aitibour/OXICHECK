@@ -1,0 +1,169 @@
+{
+  "common": {
+    "appName": "HotelCheckIn",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "submit": "Submit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading...",
+    "required": "Required",
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No",
+    "errorOccurred": "An error occurred",
+    "tryAgain": "Try Again",
+    "poweredBy": "Powered by HotelCheckIn",
+    "stepOf": "Step {current} of {total}"
+  },
+  "precheck": {
+    "title": "Pre-Check-In",
+    "subtitle": "Complete your check-in details before arrival",
+    "welcome": "Welcome, {name}!",
+    "welcomeGeneric": "Welcome!",
+    "progressLabel": "Check-in progress",
+
+    "steps": {
+      "profile": "Your Profile",
+      "stayDetails": "Stay Details",
+      "policies": "Policies",
+      "upsells": "Enhance Your Stay",
+      "idUpload": "ID Verification",
+      "confirmation": "Confirmation"
+    },
+
+    "profile": {
+      "heading": "Your Information",
+      "description": "Please confirm or update your contact details.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "preferredLanguage": "Preferred Language",
+      "english": "English",
+      "french": "French"
+    },
+
+    "stayDetails": {
+      "heading": "Your Stay",
+      "description": "Review and update your stay details.",
+      "checkIn": "Check-In Date",
+      "checkOut": "Check-Out Date",
+      "nights": "{count, plural, one {1 night} other {# nights}}",
+      "roomType": "Room Type",
+      "adults": "Adults",
+      "children": "Children",
+      "specialRequests": "Special Requests",
+      "specialRequestsPlaceholder": "Let us know if you have any special requests...",
+      "arrivalTime": "Estimated Arrival Time",
+      "selectTime": "Select arrival time"
+    },
+
+    "policies": {
+      "heading": "Hotel Policies",
+      "description": "Please review and accept the following policies to continue.",
+      "cancellationPolicy": "Cancellation Policy",
+      "houseRules": "House Rules",
+      "privacyPolicy": "Privacy Policy",
+      "acceptPolicy": "I have read and accept the {policy}",
+      "dataConsent": "I consent to the collection and processing of my personal information in accordance with PIPEDA and Quebec's Law 25.",
+      "dataConsentDescription": "Your personal data will be used solely for the purpose of your hotel stay and will be handled in compliance with Canadian privacy laws.",
+      "marketingOptIn": "I would like to receive promotional offers and updates from this hotel.",
+      "marketingOptInDescription": "You can unsubscribe at any time. This is optional.",
+      "allPoliciesRequired": "You must accept all required policies to continue."
+    },
+
+    "upsells": {
+      "heading": "Enhance Your Stay",
+      "description": "Add special extras to make your stay even better.",
+      "noOffers": "No offers are currently available for your stay.",
+      "addToStay": "Add",
+      "removeFromStay": "Remove",
+      "selected": "Selected",
+      "runningTotal": "Extras Total",
+      "skipUpsells": "No thanks, continue",
+      "categories": {
+        "BREAKFAST": "Breakfast",
+        "SPA": "Spa & Wellness",
+        "AIRPORT_PICKUP": "Airport Pickup",
+        "ROOM_UPGRADE": "Room Upgrade",
+        "EARLY_CHECKIN": "Early Check-In",
+        "LATE_CHECKOUT": "Late Check-Out",
+        "PARKING": "Parking",
+        "CELEBRATION": "Celebration Package"
+      }
+    },
+
+    "idUpload": {
+      "heading": "ID Verification",
+      "description": "Upload a government-issued photo ID for a faster check-in at the front desk.",
+      "consentNotice": "Your ID will be securely stored and automatically deleted within 24 hours of check-in.",
+      "consentCheckbox": "I consent to the temporary storage of my ID for verification purposes.",
+      "uploadLabel": "Upload your ID",
+      "uploadHint": "Accepted formats: JPG, PNG, PDF (max 10 MB)",
+      "takePhoto": "Take a Photo",
+      "chooseFile": "Choose File",
+      "preview": "ID Preview",
+      "removeFile": "Remove uploaded file",
+      "skipStep": "Skip this step"
+    },
+
+    "confirmation": {
+      "heading": "Review & Confirm",
+      "description": "Please review your information before submitting.",
+      "profileSection": "Your Profile",
+      "staySection": "Stay Details",
+      "policiesSection": "Policies Accepted",
+      "upsellsSection": "Selected Extras",
+      "idSection": "ID Verification",
+      "noneSelected": "None selected",
+      "idUploaded": "ID uploaded",
+      "idNotUploaded": "Not uploaded",
+      "totalExtras": "Total Extras",
+      "submitCheckin": "Complete Pre-Check-In",
+      "submitting": "Submitting...",
+      "successTitle": "Pre-Check-In Complete!",
+      "successMessage": "You're all set. We look forward to welcoming you on {date}.",
+      "successInstructions": "When you arrive, just head to the front desk and let them know you've completed your pre-check-in."
+    }
+  },
+
+  "errors": {
+    "invalidToken": "Invalid Check-In Link",
+    "invalidTokenMessage": "This check-in link is invalid or has expired. Please contact the hotel for a new link.",
+    "expiredToken": "Link Expired",
+    "expiredTokenMessage": "Your pre-check-in link has expired. Please contact the hotel for assistance.",
+    "networkError": "Connection Error",
+    "networkErrorMessage": "We couldn't connect to the server. Please check your connection and try again.",
+    "serverError": "Something Went Wrong",
+    "serverErrorMessage": "We're experiencing an issue. Please try again in a few minutes.",
+    "contactHotel": "Contact the Hotel",
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number",
+      "minLength": "Must be at least {min} characters",
+      "maxLength": "Must be no more than {max} characters",
+      "fileTooBig": "File is too large. Maximum size is {max} MB.",
+      "invalidFileType": "Invalid file type. Accepted: {types}"
+    }
+  },
+
+  "accessibility": {
+    "mainContent": "Main content",
+    "navigation": "Navigation",
+    "progressBar": "Check-in progress: step {current} of {total}",
+    "stepComplete": "Step {step} completed",
+    "stepCurrent": "Current step: {step}",
+    "stepUpcoming": "Upcoming step: {step}",
+    "languageSwitcher": "Switch language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "loadingContent": "Loading content, please wait",
+    "formError": "There are errors in the form. Please review and correct them.",
+    "fileUploadArea": "File upload area. Click or drag a file to upload."
+  }
+}
