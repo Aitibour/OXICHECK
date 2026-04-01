@@ -3,15 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "description": "PMS integration middleware — Cloudbeds, Mews, Lightspeed, etc.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "echo 'PMS middleware build — not yet scaffolded'",
-    "dev": "echo 'PMS middleware dev — not yet scaffolded'",
-    "lint": "echo 'PMS middleware lint — not yet scaffolded'",
-    "test": "echo 'PMS middleware test — not yet scaffolded'",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@hotelcheckin/shared": "workspace:*"
+    "@hotelcheckin/shared": "workspace:*",
+    "axios": "^1.7.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
   }
 }
