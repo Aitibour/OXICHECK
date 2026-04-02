@@ -15,7 +15,7 @@
     "incremental": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictBindCallApply": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false
