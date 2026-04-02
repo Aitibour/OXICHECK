@@ -24,7 +24,7 @@ const CHANNEL_BADGES: Record<string, { label: string; classes: string }> = {
 
 function parsePropertyId(token: string): string | null {
   try {
-    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const p = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return p.propertyId ?? p.defaultPropertyId ?? null;
   } catch {
     return null;

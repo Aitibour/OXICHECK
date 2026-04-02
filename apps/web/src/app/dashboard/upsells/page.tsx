@@ -37,7 +37,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 function parsePropertyId(token: string): string | null {
   try {
-    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const p = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return p.propertyId ?? p.defaultPropertyId ?? null;
   } catch {
     return null;

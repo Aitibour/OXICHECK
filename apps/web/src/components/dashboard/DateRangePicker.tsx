@@ -17,7 +17,7 @@ const PRESETS: Array<{ key: Preset; label: string }> = [
 ];
 
 function toISO(date: Date) {
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split('T')[0]!;
 }
 
 function getPresetRange(preset: Preset): DateRange {

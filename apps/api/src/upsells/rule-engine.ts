@@ -29,7 +29,7 @@ export interface EvaluatableRule {
  * Evaluate a single rule against the reservation context.
  */
 function evaluateRule(rule: EvaluatableRule, ctx: ReservationContext): boolean {
-  const rawCtxValue = (ctx as Record<string, unknown>)[rule.attribute];
+  const rawCtxValue = (ctx as unknown as Record<string, unknown>)[rule.attribute];
 
   // Numeric attributes for comparison operators
   const numericAttributes = new Set([

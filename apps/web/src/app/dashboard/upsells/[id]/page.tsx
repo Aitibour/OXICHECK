@@ -8,7 +8,6 @@ import {
   updateUpsellOffer,
   getUpsellRules,
   createUpsellRule,
-  updateUpsellRule,
   deleteUpsellRule,
   getUpsellAnalytics,
   getAuthToken,
@@ -22,7 +21,7 @@ import { RuleBuilder, type RuleGroup } from '@/components/dashboard/RuleBuilder'
 
 function parsePropertyId(token: string): string | null {
   try {
-    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const p = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return p.propertyId ?? p.defaultPropertyId ?? null;
   } catch {
     return null;
@@ -39,7 +38,7 @@ function rulesToGroups(rules: UpsellRule[]): RuleGroup[] {
     byGroup[g].push(r);
   }
   return Object.entries(byGroup).map(([, groupRules]) => ({
-    id: String(groupRules[0].logicGroup ?? 0),
+    id: String(groupRules[0]?.logicGroup ?? 0),
     conditions: groupRules.map((r) => ({
       id: r.id,
       attribute: r.attribute as RuleGroup['conditions'][number]['attribute'],
@@ -96,11 +95,11 @@ export default function EditUpsellOfferPage({ params }: { params: Promise<{ id: 
 
   useEffect(() => {
     if (activeTab === 'analytics' && propertyId && !analytics) {
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split('T')[0]!;
       const from = new Date();
       from.setDate(from.getDate() - 29);
       getUpsellAnalytics(propertyId, {
-        from: from.toISOString().split('T')[0],
+        from: from.toISOString().split('T')[0]!,
         to: today,
         offerId: id,
       })
@@ -136,6 +135,7 @@ export default function EditUpsellOfferPage({ params }: { params: Promise<{ id: 
       const newRules: UpsellRule[] = [];
       for (let gi = 0; gi < ruleGroups.length; gi++) {
         const group = ruleGroups[gi];
+        if (!group) continue;
         for (const cond of group.conditions) {
           const created = await createUpsellRule(id, {
             attribute: cond.attribute,

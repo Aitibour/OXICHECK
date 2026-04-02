@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1] ?? ''));
       if (payload.role !== 'PLATFORM_ADMIN') {
         router.push('/dashboard');
         return;

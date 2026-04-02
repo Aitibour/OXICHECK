@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsBoolean, IsEnum } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 
 enum BillingTier {
   STARTER = 'STARTER',
@@ -9,7 +9,7 @@ enum BillingTier {
   ENTERPRISE = 'ENTERPRISE',
 }
 
-export class OrgQueryDto extends PaginationQueryDto {
+export class OrgQueryDto extends PaginationDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()

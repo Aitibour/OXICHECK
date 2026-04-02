@@ -92,13 +92,10 @@ export class BillingService {
         {
           price_data: {
             currency: 'cad',
-            product_data: {
-              name: `HotelCheckIn ${tier} Plan`,
-              metadata: { tier },
-            },
+            product: undefined,
             unit_amount: tierConfig.monthlyPrice,
             recurring: { interval: 'month' },
-          },
+          } as any,
         },
       ],
       metadata: { organizationId, tier },
@@ -179,13 +176,10 @@ export class BillingService {
               id: itemId,
               price_data: {
                 currency: 'cad',
-                product_data: {
-                  name: `HotelCheckIn ${newTier} Plan`,
-                  metadata: { tier: newTier },
-                },
+                product: undefined,
                 unit_amount: tierConfig.monthlyPrice,
                 recurring: { interval: 'month' },
-              },
+              } as any,
             },
           ],
           metadata: { organizationId, tier: newTier },

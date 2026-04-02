@@ -137,7 +137,7 @@ export class PmsService {
           syncedCount: event.result.syncedCount,
           failedCount: event.result.failedCount,
           errors: event.result.errors,
-        },
+        } as any,
         syncedAt: new Date(event.timestamp),
       },
     });

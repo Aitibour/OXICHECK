@@ -26,7 +26,7 @@ export default function OrganizationsPage() {
 
   async function loadOrgs() {
     const result = await getOrganizations({ search, page: 1, limit: 50 });
-    setOrgs(result.data);
+    setOrgs(result.data as Organization[]);
   }
 
   async function handleCreate() {

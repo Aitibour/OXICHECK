@@ -23,12 +23,12 @@ const FILTER_TABS: Array<{ key: FilterTab; label: string }> = [
 ];
 
 function getTodayISO() {
-  return new Date().toISOString().split('T')[0];
+  return new Date().toISOString().split('T')[0]!;
 }
 
 function parsePropertyId(token: string): string | null {
   try {
-    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const p = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return p.propertyId ?? p.defaultPropertyId ?? null;
   } catch {
     return null;

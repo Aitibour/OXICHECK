@@ -18,7 +18,7 @@ import { ReportChart } from '@/components/dashboard/ReportChart';
 
 function parsePropertyId(token: string): string | null {
   try {
-    const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const p = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return p.propertyId ?? p.defaultPropertyId ?? null;
   } catch {
     return null;
@@ -28,10 +28,10 @@ function parsePropertyId(token: string): string | null {
 const FALLBACK_PROPERTY_ID = process.env.NEXT_PUBLIC_DEFAULT_PROPERTY_ID ?? '';
 
 function getDefaultRange(): DateRange {
-  const to = new Date().toISOString().split('T')[0];
+  const to = new Date().toISOString().split('T')[0]!;
   const from = new Date();
   from.setDate(from.getDate() - 29);
-  return { from: from.toISOString().split('T')[0], to };
+  return { from: from.toISOString().split('T')[0]!, to };
 }
 
 function formatCurrency(cents: number) {

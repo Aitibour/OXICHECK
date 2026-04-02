@@ -117,17 +117,19 @@ export class ReportsService {
       { offerId: string; title: string; category: string; revenueCents: number; count: number }
     > = {};
     for (const sel of upsellSelections) {
-      if (!offerRevenueMap[sel.offerId]) {
-        offerRevenueMap[sel.offerId] = {
+      let entry = offerRevenueMap[sel.offerId];
+      if (!entry) {
+        entry = {
           offerId: sel.offerId,
           title: sel.offer.title,
           category: sel.offer.category,
           revenueCents: 0,
           count: 0,
         };
+        offerRevenueMap[sel.offerId] = entry;
       }
-      offerRevenueMap[sel.offerId].revenueCents += sel.totalPriceInCents;
-      offerRevenueMap[sel.offerId].count += 1;
+      entry.revenueCents += sel.totalPriceInCents;
+      entry.count += 1;
     }
     const topUpsellOffers = Object.values(offerRevenueMap)
       .sort((a, b) => b.revenueCents - a.revenueCents)
@@ -535,8 +537,9 @@ export class ReportsService {
     > = {};
 
     for (const row of offerRows) {
-      if (!byCategory[row.category]) {
-        byCategory[row.category] = {
+      let cat = byCategory[row.category];
+      if (!cat) {
+        cat = {
           category: row.category,
           offers: [],
           totalRevenueCents: 0,
@@ -544,11 +547,12 @@ export class ReportsService {
           totalImpressions: 0,
           categoryConversionRate: 0,
         };
+        byCategory[row.category] = cat;
       }
-      byCategory[row.category].offers.push(row);
-      byCategory[row.category].totalRevenueCents += row.revenueCents;
-      byCategory[row.category].totalSelections += row.selections;
-      byCategory[row.category].totalImpressions += row.impressions;
+      cat.offers.push(row);
+      cat.totalRevenueCents += row.revenueCents;
+      cat.totalSelections += row.selections;
+      cat.totalImpressions += row.impressions;
     }
 
     for (const cat of Object.values(byCategory)) {
@@ -622,8 +626,9 @@ export class ReportsService {
 
     for (const log of logs) {
       const key = `${log.channel}::${log.template?.type ?? 'UNKNOWN'}`;
-      if (!groups[key]) {
-        groups[key] = {
+      let g = groups[key];
+      if (!g) {
+        g = {
           channel: log.channel,
           templateType: log.template?.type ?? null,
           sent: 0,
@@ -633,8 +638,8 @@ export class ReportsService {
           bounced: 0,
           failed: 0,
         };
+        groups[key] = g;
       }
-      const g = groups[key];
       g.sent += 1;
       if (['DELIVERED', 'OPENED', 'CLICKED'].includes(log.status))
         g.delivered += 1;
@@ -716,14 +721,16 @@ export class ReportsService {
     > = {};
 
     for (const log of syncLogs) {
-      const day = log.syncedAt.toISOString().split('T')[0];
-      if (!dailyMap[day]) {
-        dailyMap[day] = { date: day, attempts: 0, successes: 0, failures: 0, partial: 0 };
+      const day = log.syncedAt.toISOString().split('T')[0]!;
+      let entry = dailyMap[day];
+      if (!entry) {
+        entry = { date: day, attempts: 0, successes: 0, failures: 0, partial: 0 };
+        dailyMap[day] = entry;
       }
-      dailyMap[day].attempts += 1;
-      if (log.status === 'SUCCESS') dailyMap[day].successes += 1;
-      if (log.status === 'FAILED') dailyMap[day].failures += 1;
-      if (log.status === 'PARTIAL') dailyMap[day].partial += 1;
+      entry.attempts += 1;
+      if (log.status === 'SUCCESS') entry.successes += 1;
+      if (log.status === 'FAILED') entry.failures += 1;
+      if (log.status === 'PARTIAL') entry.partial += 1;
     }
 
     const dailyBreakdown = Object.values(dailyMap);

@@ -46,9 +46,11 @@ export class UpsellsService {
   async updateOffer(id: string, data: UpdateOfferDto) {
     await this.findOfferOrThrow(id);
 
+    const { rules, ...updateData } = data as any;
+
     return this.prisma.upsellOffer.update({
       where: { id },
-      data,
+      data: updateData,
       include: { rules: true },
     });
   }
@@ -131,7 +133,7 @@ export class UpsellsService {
     );
 
     return {
-      dayOfWeek: days[checkIn.getUTCDay()],
+      dayOfWeek: days[checkIn.getUTCDay()] ?? 'SUNDAY',
       nightsCount: reservation.nightsCount,
       roomType: reservation.roomType ?? '',
       bookingSource: reservation.bookingSource ?? '',

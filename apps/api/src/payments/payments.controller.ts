@@ -21,7 +21,8 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
-import type { Request, Response, RawBodyRequest } from 'express';
+import type { Request, Response } from 'express';
+import type { RawBodyRequest } from '@nestjs/common';
 import Stripe from 'stripe';
 import { Role } from '@hotelcheckin/shared';
 import { Roles } from '../common/decorators/roles.decorator';

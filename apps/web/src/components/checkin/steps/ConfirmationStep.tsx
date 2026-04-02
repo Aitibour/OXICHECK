@@ -18,7 +18,6 @@ export function ConfirmationStep({
   reservation,
   formData,
   goToStep,
-  completedSteps,
 }: ConfirmationStepProps) {
   const t = useTranslations();
   const tConfirm = useTranslations('precheck.confirmation');

@@ -16,7 +16,7 @@ export default function AdminOverviewPage() {
   const [stats, setStats] = useState<SystemStats | null>(null);
 
   useEffect(() => {
-    getSystemStats().then(setStats).catch(console.error);
+    getSystemStats().then((data) => setStats(data as SystemStats)).catch(console.error);
   }, []);
 
   if (!stats) return <div className="animate-pulse">Loading system stats...</div>;

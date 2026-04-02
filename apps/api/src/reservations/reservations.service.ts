@@ -74,7 +74,7 @@ export class ReservationsService {
             select: {
               id: true,
               completedAt: true,
-              stepsCompleted: true,
+              completedSteps: true,
             },
           },
         },
@@ -104,7 +104,7 @@ export class ReservationsService {
         preCheckSubmission: true,
         upsellSelections: {
           include: {
-            upsellOffer: true,
+            offer: true,
           },
         },
         payments: {
@@ -200,7 +200,11 @@ export class ReservationsService {
     const submission = await this.prisma.preCheckSubmission.findUnique({
       where: { reservationId },
       include: {
-        consentRecords: true,
+        reservation: {
+          include: {
+            consentRecords: true,
+          },
+        },
       },
     });
 
@@ -279,16 +283,17 @@ export class ReservationsService {
 
     for (let i = 0; i < 7; i++) {
       const d = new Date(targetDate.getTime() + i * 24 * 60 * 60 * 1000);
-      const key = d.toISOString().split('T')[0];
+      const key = d.toISOString().split('T')[0]!;
       dailySummary[key] = { date: key, total: 0, completed: 0, checkedIn: 0 };
     }
 
     for (const r of weeklyReservations) {
-      const key = new Date(r.checkInDate).toISOString().split('T')[0];
-      if (dailySummary[key]) {
-        dailySummary[key].total++;
-        if (r.preCheckStatus === 'COMPLETED') dailySummary[key].completed++;
-        if (r.status === 'CHECKED_IN') dailySummary[key].checkedIn++;
+      const key = new Date(r.checkInDate).toISOString().split('T')[0]!;
+      const entry = dailySummary[key];
+      if (entry) {
+        entry.total++;
+        if (r.preCheckStatus === 'COMPLETED') entry.completed++;
+        if (r.status === 'CHECKED_IN') entry.checkedIn++;
       }
     }
 

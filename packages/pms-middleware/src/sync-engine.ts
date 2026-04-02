@@ -4,7 +4,7 @@
 // Orchestrates data pull from PMS vendors via adapters.
 // Provides retry logic, per-record error isolation, and event emission.
 
-import type { PmsAdapter, PmsConfig } from './adapter';
+import type { PmsConfig } from './adapter';
 import type { PmsSyncResult, NormalizedReservation } from './types/normalized';
 import { PmsAdapterRegistry, createDefaultRegistry } from './registry';
 

@@ -19,7 +19,6 @@ interface CheckinWizardProps {
 }
 
 const STEP_IDS = ['profile', 'stayDetails', 'policies', 'upsells', 'idUpload', 'confirmation'] as const;
-type StepId = (typeof STEP_IDS)[number];
 
 export function CheckinWizard({ token, reservation }: CheckinWizardProps) {
   const t = useTranslations();

@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
   // Admin routes: verify PLATFORM_ADMIN role from JWT payload
   if (pathname.startsWith('/admin') && token) {
     try {
-      const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      const payload = JSON.parse(Buffer.from(token.split('.')[1] ?? '', 'base64').toString());
       if (payload.role !== 'PLATFORM_ADMIN') {
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }

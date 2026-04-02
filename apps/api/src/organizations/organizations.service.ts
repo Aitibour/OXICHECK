@@ -71,7 +71,7 @@ export class OrganizationsService {
         this.prisma.property.count(),
         this.prisma.reservation.count(),
         this.prisma.preCheckSubmission.count({ where: { completedAt: { not: null } } }),
-        this.prisma.subscription.groupBy({ by: ['tier'], where: { status: 'ACTIVE' }, _count: true }),
+        this.prisma.subscription.groupBy({ by: ['tier'], where: { status: 'ACTIVE' }, orderBy: { tier: 'asc' }, _count: { _all: true } }),
       ]);
 
     return {
@@ -79,8 +79,14 @@ export class OrganizationsService {
       totalProperties,
       totalReservations,
       totalPreChecks,
-      activeSubscriptions: subscriptionsByTier.reduce((sum, t) => sum + t._count, 0),
-      subscriptionsByTier: subscriptionsByTier.map((t) => ({ tier: t.tier, count: t._count })),
+      activeSubscriptions: subscriptionsByTier.reduce((sum, t) => {
+        const count = typeof t._count === 'object' && t._count !== null ? (t._count as any)._all ?? 0 : 0;
+        return sum + count;
+      }, 0),
+      subscriptionsByTier: subscriptionsByTier.map((t) => {
+        const count = typeof t._count === 'object' && t._count !== null ? (t._count as any)._all ?? 0 : 0;
+        return { tier: t.tier, count };
+      }),
     };
   }
 

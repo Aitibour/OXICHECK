@@ -17,7 +17,7 @@ interface StaffUser {
 
 function parseJwtPayload(token: string): StaffUser | null {
   try {
-    const base64Payload = token.split('.')[1];
+    const base64Payload = token.split('.')[1] ?? '';
     const decoded = atob(base64Payload.replace(/-/g, '+').replace(/_/g, '/'));
     return JSON.parse(decoded) as StaffUser;
   } catch {

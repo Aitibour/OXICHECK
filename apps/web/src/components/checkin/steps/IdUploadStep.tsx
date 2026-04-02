@@ -13,7 +13,7 @@ import clsx from 'clsx';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
 
-export function IdUploadStep({ token, formData, onNext, onSkip }: StepProps) {
+export function IdUploadStep({ token, onNext, onSkip }: StepProps) {
   const t = useTranslations();
   const tId = useTranslations('precheck.idUpload');
 

@@ -53,7 +53,7 @@ export class CommunicationsService {
     // Initialise SendGrid
     const sendgridApiKey = this.config.get<string>('sendgrid.apiKey');
     if (sendgridApiKey) {
-      sgMail.default.setApiKey(sendgridApiKey);
+      (sgMail as any).default ? (sgMail as any).default.setApiKey(sendgridApiKey) : sgMail.setApiKey(sendgridApiKey);
     }
 
     // Initialise Twilio (lazy — only if credentials are present)
@@ -124,7 +124,8 @@ export class CommunicationsService {
     const fromEmail = this.config.get<string>('sendgrid.fromEmail');
 
     try {
-      const [response] = await sgMail.default.send({
+      const sendFn = (sgMail as any).default ? (sgMail as any).default.send.bind((sgMail as any).default) : sgMail.send.bind(sgMail);
+      const [response] = await sendFn({
         to: options.to,
         from: fromEmail!,
         subject: options.subject,
@@ -407,8 +408,8 @@ export class CommunicationsService {
 
     for (const log of logs) {
       // By channel
-      const ch = stats.byChannel[log.channel] || { total: 0 };
-      ch.total++;
+      const ch = stats.byChannel[log.channel] ?? { total: 0 };
+      ch.total = (ch.total ?? 0) + 1;
       ch[log.status] = (ch[log.status] || 0) + 1;
       stats.byChannel[log.channel] = ch;
 

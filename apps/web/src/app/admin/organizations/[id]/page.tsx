@@ -21,7 +21,7 @@ export default function OrganizationDetailPage() {
   const [org, setOrg] = useState<OrgDetail | null>(null);
 
   useEffect(() => {
-    if (params.id) getOrganization(params.id as string).then(setOrg).catch(console.error);
+    if (params.id) getOrganization(params.id as string).then((data) => setOrg(data as OrgDetail)).catch(console.error);
   }, [params.id]);
 
   if (!org) return <div className="animate-pulse">Loading...</div>;

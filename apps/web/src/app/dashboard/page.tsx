@@ -7,7 +7,7 @@ import { StatsCard } from '@/components/dashboard/StatsCard';
 
 function parsePropertyIdFromToken(token: string): string | null {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    const payload = JSON.parse(atob((token.split('.')[1] ?? '').replace(/-/g, '+').replace(/_/g, '/')));
     return payload.propertyId ?? payload.defaultPropertyId ?? null;
   } catch {
     return null;
