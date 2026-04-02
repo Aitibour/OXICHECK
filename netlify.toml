@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm --filter @hotelcheckin/database exec prisma generate --schema=prisma/schema.prisma && pnpm turbo build --filter=@hotelcheckin/web..."
+  publish = "apps/web/.next"
+
+[build.environment]
+  NEXT_PUBLIC_API_URL = "https://hotelcheckin-api.up.railway.app"
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

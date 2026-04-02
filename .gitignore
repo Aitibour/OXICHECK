@@ -80,3 +80,5 @@ yarn-error.log*
 .cache/
 *.mp4
 .env
+
+.vercel
