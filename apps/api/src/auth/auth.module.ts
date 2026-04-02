@@ -24,6 +24,6 @@ import { GuestTokenGuard } from './guards/guest-token.guard';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, JwtAuthGuard, GuestTokenGuard],
-  exports: [AuthService, JwtAuthGuard, GuestTokenGuard],
+  exports: [AuthService, JwtAuthGuard, GuestTokenGuard, JwtModule],
 })
 export class AuthModule {}

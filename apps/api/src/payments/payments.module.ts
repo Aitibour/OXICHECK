@@ -22,8 +22,8 @@ import { STRIPE_PROVIDER } from '../billing/billing.constants';
     {
       provide: STRIPE_PROVIDER,
       useFactory: (configService: ConfigService) => {
-        const secretKey = configService.get<string>('stripe.secretKey');
-        return new Stripe(secretKey ?? '', {
+        const secretKey = configService.get<string>('stripe.secretKey') || 'sk_test_placeholder';
+        return new Stripe(secretKey, {
           apiVersion: '2024-12-18.acacia' as any,
           typescript: true,
         });

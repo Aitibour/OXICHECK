@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+.git
+.github
+.next
+**/dist
+*.mp4
+.env
+.env.*
+.netlify
+.vercel
+.claude
+.turbo
+**/.turbo
