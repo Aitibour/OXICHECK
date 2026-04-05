@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { SectionWrapper } from "./section-wrapper";
 import { motion } from "framer-motion";
-import { Check, Sparkles, Gift, Building2 } from "lucide-react";
+import { Check, Zap, Crown, Rocket, Building2, ArrowRight } from "lucide-react";
 
 const plans = [
   {
     name: "Starter",
+    icon: Zap,
     price: "0.50",
     unit: "per arrival",
     description: "For boutique hotels with moderate traffic.",
@@ -22,9 +23,11 @@ const plans = [
     ],
     cta: "Start Free Month",
     highlighted: false,
+    color: "primary",
   },
   {
     name: "Professional",
+    icon: Crown,
     price: "0.35",
     unit: "per arrival",
     description: "For growing hotels that want everything.",
@@ -41,9 +44,11 @@ const plans = [
     ],
     cta: "Start Free Month",
     highlighted: true,
+    color: "accent",
   },
   {
     name: "Business",
+    icon: Rocket,
     price: "0.20",
     unit: "per arrival",
     description: "For established hotels with high volume.",
@@ -60,6 +65,29 @@ const plans = [
     ],
     cta: "Start Free Month",
     highlighted: false,
+    color: "primary",
+  },
+  {
+    name: "Enterprise",
+    icon: Building2,
+    price: "Custom",
+    unit: "volume pricing",
+    description: "For hotel chains and groups with 5,000+ arrivals/month.",
+    limit: "Unlimited arrivals",
+    features: [
+      "Unlimited properties",
+      "Unlimited PMS integrations",
+      "All notification channels",
+      "Police reporting automation",
+      "Multi-property dashboard",
+      "API access & SDK",
+      "White-label option",
+      "Dedicated account manager",
+      "SLA guarantee",
+    ],
+    cta: "Contact Sales",
+    highlighted: false,
+    color: "navy",
   },
 ];
 
@@ -79,117 +107,106 @@ export function PricingSection() {
           <p className="mt-4 text-base text-muted font-light leading-relaxed">
             No fixed monthly fees. Pay per check-in processed. Scale up or down freely.
           </p>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-4 py-2 text-sm font-medium text-green-700">
-            <Gift size={16} />
-            First month free for all new clients
-          </div>
         </div>
 
-        {/* 3 Pay-as-you-go plans */}
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+        {/* Free trial banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8 mx-auto max-w-md"
+        >
+          <div className="relative rounded-2xl bg-gradient-to-r from-accent via-accent-light to-accent overflow-hidden px-6 py-4 text-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.2),transparent_70%)]" />
+            <p className="relative text-navy font-semibold text-sm">
+              First month completely free for all new clients
+            </p>
+            <p className="relative text-navy/60 text-xs mt-0.5">
+              No credit card required. Cancel anytime.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* 4 Plans in a row */}
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
-              className={`rounded-2xl p-7 relative transition-all duration-500 ${
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className={`rounded-2xl p-6 relative transition-all duration-500 flex flex-col ${
                 plan.highlighted
-                  ? "bg-white border-2 border-primary/20 shadow-2xl shadow-primary/10 scale-[1.02]"
+                  ? "bg-white border-2 border-accent shadow-2xl shadow-accent/15 scale-[1.03] z-10"
                   : "bg-white border border-gray-200/80 hover:shadow-lg hover:shadow-gray-100/80"
               }`}
             >
               {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-navy">
-                  <Sparkles size={12} />
-                  Best Value
-                </span>
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-[11px] font-bold text-navy uppercase tracking-wider shadow-lg shadow-accent/30">
+                    <Crown size={11} />
+                    Most Popular
+                  </span>
+                </div>
               )}
 
-              <h3 className={`text-sm font-semibold uppercase tracking-wider ${plan.highlighted ? "text-primary" : "text-muted"}`}>
-                {plan.name}
-              </h3>
-              <p className="mt-1 text-sm font-light text-muted">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className={`h-9 w-9 rounded-lg flex items-center justify-center ${
+                  plan.highlighted ? "bg-accent/15" : plan.color === "navy" ? "bg-navy/10" : "bg-primary/10"
+                }`}>
+                  <plan.icon size={18} className={
+                    plan.highlighted ? "text-accent" : plan.color === "navy" ? "text-navy" : "text-primary"
+                  } />
+                </div>
+                <h3 className="text-sm font-bold text-secondary uppercase tracking-wider">
+                  {plan.name}
+                </h3>
+              </div>
+
+              <p className="text-xs text-muted font-light mb-4">
                 {plan.description}
               </p>
 
-              <div className="mt-5 pb-5 border-b border-gray-100">
-                <span className="text-4xl font-semibold text-secondary">
-                  ${plan.price}
-                </span>
-                <span className="text-sm text-muted ml-1">
-                  {plan.unit}
-                </span>
-                <p className="mt-1 text-xs text-muted/70">{plan.limit}</p>
+              <div className="pb-4 border-b border-gray-100 mb-4">
+                {plan.price === "Custom" ? (
+                  <span className="text-3xl font-bold text-secondary">Custom</span>
+                ) : (
+                  <>
+                    <span className="text-3xl font-bold text-secondary">${plan.price}</span>
+                    <span className="text-xs text-muted ml-1.5">{plan.unit}</span>
+                  </>
+                )}
+                <p className="text-[10px] text-muted/60 mt-1 uppercase tracking-wider">{plan.limit}</p>
               </div>
 
-              <ul className="mt-5 space-y-2.5">
+              <ul className="space-y-2 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2.5">
-                    <Check
-                      size={15}
-                      className={`mt-0.5 shrink-0 ${plan.highlighted ? "text-primary" : "text-accent"}`}
-                    />
-                    <span className="text-sm font-light text-muted">
-                      {feature}
-                    </span>
+                  <li key={feature} className="flex items-start gap-2">
+                    <Check size={14} className={`mt-0.5 shrink-0 ${
+                      plan.highlighted ? "text-accent" : "text-primary/60"
+                    }`} />
+                    <span className="text-xs text-muted">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 href="/contact"
-                className={`mt-7 block w-full rounded-full py-3 text-center text-sm font-semibold transition-all duration-300 ${
+                className={`mt-6 flex items-center justify-center gap-2 w-full rounded-full py-3 text-center text-sm font-semibold transition-all duration-300 ${
                   plan.highlighted
-                    ? "bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20"
+                    ? "bg-accent text-navy hover:bg-accent-light shadow-lg shadow-accent/20"
+                    : plan.color === "navy"
+                    ? "bg-navy text-white hover:bg-secondary"
                     : "border border-gray-200 text-secondary hover:bg-secondary hover:text-white hover:border-secondary"
                 }`}
               >
                 {plan.cta}
+                <ArrowRight size={14} />
               </Link>
             </motion.div>
           ))}
         </div>
-
-        {/* Enterprise section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-8 rounded-2xl border border-gray-200/80 bg-white p-8 sm:p-10"
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="flex items-start gap-4">
-              <div className="h-12 w-12 rounded-xl bg-navy flex items-center justify-center shrink-0">
-                <Building2 size={22} className="text-accent" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-secondary">
-                  Enterprise & Hotel Groups
-                </h3>
-                <p className="mt-1 text-sm text-muted font-light max-w-lg">
-                  For hotel chains and groups with 5,000+ arrivals/month or multiple properties.
-                  Custom volume pricing, dedicated infrastructure, SLA guarantee, white-label options, and a dedicated account manager.
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {["Unlimited properties", "Volume discounts", "White-label", "SLA guarantee", "API & SDK access", "Custom integrations"].map((tag) => (
-                    <span key={tag} className="inline-block rounded-full bg-surface px-3 py-1 text-xs font-medium text-muted">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <Link
-              href="/contact"
-              className="shrink-0 inline-flex items-center justify-center rounded-full bg-navy px-7 py-3.5 text-sm font-semibold text-white hover:bg-secondary transition-colors shadow-lg shadow-navy/10"
-            >
-              Contact Sales
-            </Link>
-          </div>
-        </motion.div>
       </div>
     </SectionWrapper>
   );

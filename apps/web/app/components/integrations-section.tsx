@@ -6,66 +6,18 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const pmsIntegrations = [
-  {
-    name: "Oracle OPERA",
-    category: "Enterprise",
-    logo: "https://logo.clearbit.com/oracle.com",
-  },
-  {
-    name: "Mews",
-    category: "Cloud PMS",
-    logo: "https://logo.clearbit.com/mews.com",
-  },
-  {
-    name: "Cloudbeds",
-    category: "Cloud PMS",
-    logo: "https://logo.clearbit.com/cloudbeds.com",
-  },
-  {
-    name: "Hotelogix",
-    category: "Cloud PMS",
-    logo: "https://logo.clearbit.com/hotelogix.com",
-  },
-  {
-    name: "RMS Cloud",
-    category: "Cloud PMS",
-    logo: "https://logo.clearbit.com/rmscloud.com",
-  },
-  {
-    name: "Little Hotelier",
-    category: "Small Hotels",
-    logo: "https://logo.clearbit.com/littlehotelier.com",
-  },
-  {
-    name: "Apaleo",
-    category: "Open PMS",
-    logo: "https://logo.clearbit.com/apaleo.com",
-  },
-  {
-    name: "StayNTouch",
-    category: "Mobile PMS",
-    logo: "https://logo.clearbit.com/stayntouch.com",
-  },
-  {
-    name: "SiteMinder",
-    category: "Channel Manager",
-    logo: "https://logo.clearbit.com/siteminder.com",
-  },
-  {
-    name: "Guestline",
-    category: "Enterprise",
-    logo: "https://logo.clearbit.com/guestline.com",
-  },
-  {
-    name: "Protel",
-    category: "Enterprise",
-    logo: "https://logo.clearbit.com/protel.net",
-  },
-  {
-    name: "WebRezPro",
-    category: "Cloud PMS",
-    logo: "https://logo.clearbit.com/webrezpro.com",
-  },
+  { name: "Oracle OPERA", category: "Enterprise", color: "#C74634" },
+  { name: "Mews", category: "Cloud PMS", color: "#00B4A0" },
+  { name: "Cloudbeds", category: "Cloud PMS", color: "#1E88E5" },
+  { name: "Hotelogix", category: "Cloud PMS", color: "#FF6B00" },
+  { name: "RMS Cloud", category: "Cloud PMS", color: "#6C5CE7" },
+  { name: "Little Hotelier", category: "Small Hotels", color: "#E91E63" },
+  { name: "Apaleo", category: "Open PMS", color: "#00BCD4" },
+  { name: "StayNTouch", category: "Mobile PMS", color: "#4CAF50" },
+  { name: "SiteMinder", category: "Channel Manager", color: "#FF5722" },
+  { name: "Guestline", category: "Enterprise", color: "#3F51B5" },
+  { name: "Protel", category: "Enterprise", color: "#009688" },
+  { name: "WebRezPro", category: "Cloud PMS", color: "#795548" },
 ];
 
 export function IntegrationsSection() {
@@ -96,24 +48,16 @@ export function IntegrationsSection() {
               transition={{ duration: 0.4, delay: i * 0.04 }}
               className="flex flex-col items-center justify-center rounded-xl border border-gray-200/80 bg-white p-5 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-500 group"
             >
-              <div className="h-12 w-12 rounded-lg bg-white flex items-center justify-center overflow-hidden">
-                <img
-                  src={pms.logo}
-                  alt={pms.name}
-                  className="h-8 w-8 object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = "none";
-                    const parent = target.parentElement;
-                    if (parent) {
-                      parent.classList.add("bg-surface");
-                      const span = document.createElement("span");
-                      span.className = "text-xs font-bold text-muted/50";
-                      span.textContent = pms.name.split(" ").map((w) => w[0]).join("");
-                      parent.appendChild(span);
-                    }
-                  }}
-                />
+              <div
+                className="h-12 w-12 rounded-xl flex items-center justify-center transition-all duration-500"
+                style={{ backgroundColor: `${pms.color}12` }}
+              >
+                <span
+                  className="text-sm font-bold transition-colors duration-300"
+                  style={{ color: pms.color }}
+                >
+                  {pms.name.split(" ").map((w) => w[0]).join("")}
+                </span>
               </div>
               <p className="mt-3 text-sm font-medium text-secondary text-center">
                 {pms.name}

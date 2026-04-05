@@ -6,7 +6,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0 -z-10">
         <img
@@ -22,7 +22,7 @@ export function Hero() {
       <div className="absolute top-1/4 right-[10%] w-72 h-72 rounded-full bg-accent/10 blur-[120px]" />
       <div className="absolute bottom-1/4 left-[5%] w-96 h-96 rounded-full bg-primary/10 blur-[140px]" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8 py-32 sm:py-40">
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8 w-full">
         <div className="max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -39,7 +39,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-8 font-display text-5xl tracking-tight text-white sm:text-6xl lg:text-7xl leading-[1.1]"
+            className="mt-6 font-display text-4xl tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]"
           >
             The future of hotel arrivals{" "}
             <span className="text-shimmer italic">starts before the lobby</span>
@@ -49,18 +49,17 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 text-lg text-white/60 sm:text-xl leading-relaxed max-w-2xl font-light"
+            className="mt-5 text-base text-white/60 sm:text-lg leading-relaxed max-w-2xl font-light"
           >
             Guests complete check-in before arrival — ID verification,
             preferences, payments. Hotels focus on hospitality, not paperwork.
-            Works with any PMS.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-10 flex flex-col sm:flex-row items-start gap-4"
+            className="mt-8 flex flex-col sm:flex-row items-start gap-3"
           >
             <Link
               href="/contact"
@@ -84,7 +83,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.7 }}
-            className="mt-16 flex items-center gap-10 text-sm"
+            className="mt-10 flex items-center gap-10 text-sm"
           >
             {[
               { value: "70%", label: "Faster check-in" },
@@ -96,10 +95,10 @@ export function Hero() {
                   <div className="h-8 w-px bg-white/15 -ml-5 mr-0" />
                 )}
                 <div>
-                  <p className="text-2xl font-semibold text-accent">
+                  <p className="text-xl font-semibold text-accent">
                     {stat.value}
                   </p>
-                  <p className="text-white/40 text-xs font-medium uppercase tracking-wider mt-0.5">
+                  <p className="text-white/40 text-[10px] font-medium uppercase tracking-wider mt-0.5">
                     {stat.label}
                   </p>
                 </div>
@@ -114,7 +113,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

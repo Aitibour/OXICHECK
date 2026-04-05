@@ -13,6 +13,21 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+function Logo({ light }: { light: boolean }) {
+  return (
+    <Link href="/" className="flex items-center gap-2">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#c9a55c" />
+        <path d="M8 16C8 11.6 11.6 8 16 8C20.4 8 24 11.6 24 16C24 20.4 20.4 24 16 24C11.6 24 8 20.4 8 16Z" stroke="#0c1222" strokeWidth="2.5" fill="none" />
+        <path d="M13 16L15 18L19 13" stroke="#0c1222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className={`text-lg font-semibold tracking-tight transition-colors duration-500 ${light ? "text-white" : "text-navy"}`}>
+        Oxi<span className="text-accent">Check</span>
+      </span>
+    </Link>
+  );
+}
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -31,19 +46,8 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-navy font-bold text-sm tracking-tight">
-            O
-          </div>
-          <span
-            className={`text-xl font-semibold tracking-tight transition-colors duration-500 ${
-              scrolled ? "text-navy" : "text-white"
-            }`}
-          >
-            Oxi<span className="text-accent">Check</span>
-          </span>
-        </Link>
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <Logo light={!scrolled} />
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
@@ -74,7 +78,7 @@ export function Header() {
           </Link>
           <Link
             href="/contact"
-            className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-navy hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
+            className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-navy hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
           >
             Request Demo
           </Link>
@@ -111,10 +115,7 @@ export function Header() {
                 </Link>
               ))}
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <Link
-                  href="/login"
-                  className="block text-sm font-medium text-white/70"
-                >
+                <Link href="/login" className="block text-sm font-medium text-white/70">
                   Log in
                 </Link>
                 <Link
