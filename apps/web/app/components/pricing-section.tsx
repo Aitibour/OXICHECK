@@ -86,7 +86,7 @@ export function PricingSection() {
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className={`rounded-2xl p-8 relative transition-all duration-500 ${
                 plan.highlighted
-                  ? "bg-navy text-white shadow-2xl shadow-navy/20 ring-1 ring-accent/20 scale-[1.02]"
+                  ? "bg-white border-2 border-primary/20 shadow-2xl shadow-primary/10 scale-[1.02]"
                   : "bg-white border border-gray-200/80 hover:shadow-lg hover:shadow-gray-100/80"
               }`}
             >
@@ -97,24 +97,24 @@ export function PricingSection() {
                 </span>
               )}
 
-              <h3 className={`text-sm font-semibold uppercase tracking-wider ${plan.highlighted ? "text-accent" : "text-muted"}`}>
+              <h3 className={`text-sm font-semibold uppercase tracking-wider ${plan.highlighted ? "text-primary" : "text-muted"}`}>
                 {plan.name}
               </h3>
-              <p className={`mt-1.5 text-sm font-light ${plan.highlighted ? "text-white/50" : "text-muted"}`}>
+              <p className="mt-1.5 text-sm font-light text-muted">
                 {plan.description}
               </p>
 
-              <div className="mt-6 pb-6 border-b border-white/10">
+              <div className="mt-6 pb-6 border-b border-gray-100">
                 {plan.price === "Custom" ? (
-                  <span className={`text-4xl font-semibold ${plan.highlighted ? "text-white" : "text-secondary"}`}>
+                  <span className="text-4xl font-semibold text-secondary">
                     Custom
                   </span>
                 ) : (
                   <>
-                    <span className={`text-4xl font-semibold ${plan.highlighted ? "text-white" : "text-secondary"}`}>
+                    <span className="text-4xl font-semibold text-secondary">
                       ${plan.price}
                     </span>
-                    <span className={`text-sm ${plan.highlighted ? "text-white/40" : "text-muted"}`}>
+                    <span className="text-sm text-muted">
                       /month
                     </span>
                   </>
@@ -126,9 +126,9 @@ export function PricingSection() {
                   <li key={feature} className="flex items-start gap-3">
                     <Check
                       size={16}
-                      className={`mt-0.5 shrink-0 ${plan.highlighted ? "text-accent" : "text-primary"}`}
+                      className={`mt-0.5 shrink-0 ${plan.highlighted ? "text-primary" : "text-accent"}`}
                     />
-                    <span className={`text-sm font-light ${plan.highlighted ? "text-white/70" : "text-muted"}`}>
+                    <span className="text-sm font-light text-muted">
                       {feature}
                     </span>
                   </li>
@@ -139,8 +139,8 @@ export function PricingSection() {
                 href="/contact"
                 className={`mt-8 block w-full rounded-full py-3.5 text-center text-sm font-semibold transition-all duration-300 ${
                   plan.highlighted
-                    ? "bg-accent text-navy hover:bg-accent-light shadow-lg shadow-accent/20"
-                    : "border border-gray-200 text-secondary hover:bg-navy hover:text-white hover:border-navy"
+                    ? "bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20"
+                    : "border border-gray-200 text-secondary hover:bg-secondary hover:text-white hover:border-secondary"
                 }`}
               >
                 {plan.cta}
