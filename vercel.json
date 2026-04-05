@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @hotelcheckin/database exec prisma generate --schema=prisma/schema.prisma && pnpm turbo build --filter=@hotelcheckin/web...",
-  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
   "installCommand": "pnpm install",
-  "framework": "nextjs"
+  "buildCommand": "pnpm --filter @hotelcheckin/database exec prisma generate --schema=prisma/schema.prisma && pnpm turbo build --filter=@hotelcheckin/web...",
+  "outputDirectory": "apps/web/.next"
 }
