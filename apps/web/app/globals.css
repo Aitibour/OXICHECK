@@ -1,15 +1,21 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
+  --color-primary: #1a56db;
+  --color-primary-dark: #1444b0;
   --color-primary-light: #3b82f6;
-  --color-secondary: #0f172a;
-  --color-accent: #06b6d4;
-  --color-surface: #f8fafc;
-  --color-surface-dark: #f1f5f9;
-  --color-muted: #64748b;
-  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
+  --color-secondary: #0c1222;
+  --color-accent: #c9a55c;
+  --color-accent-light: #dfc088;
+  --color-surface: #f7f8fa;
+  --color-surface-dark: #eef0f4;
+  --color-muted: #5e6a7e;
+  --color-navy: #0c1222;
+  --color-navy-light: #141e33;
+  --color-navy-mid: #1a2744;
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-body: "Outfit", system-ui, -apple-system, sans-serif;
 }
 
 html {
@@ -17,7 +23,50 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise overlay for textured backgrounds */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gold shimmer keyframes */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.text-shimmer {
+  background: linear-gradient(90deg, #c9a55c 0%, #f0d78c 25%, #c9a55c 50%, #f0d78c 75%, #c9a55c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

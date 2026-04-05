@@ -2,45 +2,54 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image with overlay */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-cyan-50" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl" />
+        <img
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/75 to-navy/95" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/40 to-transparent" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
+      {/* Decorative elements */}
+      <div className="absolute top-1/4 right-[10%] w-72 h-72 rounded-full bg-accent/10 blur-[120px]" />
+      <div className="absolute bottom-1/4 left-[5%] w-96 h-96 rounded-full bg-primary/10 blur-[140px]" />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8 py-32 sm:py-40">
+        <div className="max-w-3xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-accent/30 bg-accent/10 backdrop-blur-sm px-5 py-2 text-sm font-medium text-accent-light">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
               Now available for all PMS platforms
-            </span>
+            </div>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-8 text-4xl font-bold tracking-tight text-secondary sm:text-6xl lg:text-7xl"
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 font-display text-5xl tracking-tight text-white sm:text-6xl lg:text-7xl leading-[1.1]"
           >
             The future of hotel arrivals{" "}
-            <span className="text-primary">starts before the lobby</span>
+            <span className="text-shimmer italic">starts before the lobby</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-lg text-muted sm:text-xl leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-7 text-lg text-white/60 sm:text-xl leading-relaxed max-w-2xl font-light"
           >
             Guests complete check-in before arrival — ID verification,
             preferences, payments. Hotels focus on hospitality, not paperwork.
@@ -48,23 +57,25 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10 flex flex-col sm:flex-row items-start gap-4"
           >
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-medium text-white hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base font-semibold text-navy hover:bg-accent-light transition-all duration-300 shadow-xl shadow-accent/20"
             >
               Request a Demo
-              <ArrowRight size={18} />
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </Link>
             <Link
               href="#how-it-works"
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 text-base font-medium text-secondary hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-7 py-3.5 text-base font-medium text-white hover:bg-white/10 transition-all duration-300"
             >
-              <Play size={18} className="text-primary" />
               See How It Works
             </Link>
           </motion.div>
@@ -72,70 +83,46 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-12 flex items-center justify-center gap-8 text-sm text-muted"
+            transition={{ duration: 0.7, delay: 0.7 }}
+            className="mt-16 flex items-center gap-10 text-sm"
           >
-            <div className="flex items-center gap-2">
-              <svg
-                className="h-5 w-5 text-green-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              No setup fees
-            </div>
-            <div className="flex items-center gap-2">
-              <svg
-                className="h-5 w-5 text-green-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              GDPR compliant
-            </div>
-            <div className="flex items-center gap-2">
-              <svg
-                className="h-5 w-5 text-green-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Any PMS
-            </div>
+            {[
+              { value: "70%", label: "Faster check-in" },
+              { value: "95%", label: "Completion rate" },
+              { value: "500+", label: "Hotels trust us" },
+            ].map((stat, i) => (
+              <div key={stat.label} className="flex items-center gap-3">
+                {i > 0 && (
+                  <div className="h-8 w-px bg-white/15 -ml-5 mr-0" />
+                )}
+                <div>
+                  <p className="text-2xl font-semibold text-accent">
+                    {stat.value}
+                  </p>
+                  <p className="text-white/40 text-xs font-medium uppercase tracking-wider mt-0.5">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
+            ))}
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-16 rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-gray-200/50 p-2"
-        >
-          <div className="rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 aspect-[16/9] flex items-center justify-center">
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Play size={28} className="text-primary ml-1" />
-              </div>
-              <p className="text-sm text-muted">Product Demo</p>
-            </div>
-          </div>
-        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown size={24} className="text-white/30" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
