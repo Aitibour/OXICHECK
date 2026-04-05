@@ -2,95 +2,90 @@
 
 import { SectionWrapper } from "./section-wrapper";
 import { motion } from "framer-motion";
-import { Clock, FileText, AlertTriangle, Users } from "lucide-react";
 
 const problems = [
   {
-    icon: Clock,
     title: "Long queues at reception",
-    description:
-      "Guests wait 10-15 minutes to check in after a long journey. First impressions suffer.",
+    description: "Guests wait 10-15 minutes to check in after a long journey. First impressions suffer.",
     stat: "12 min",
-    statLabel: "avg. wait time",
+    statLabel: "avg. wait",
+    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800&auto=format&fit=crop",
   },
   {
-    icon: FileText,
     title: "Manual paperwork",
-    description:
-      "Registration cards, ID copies, signatures — all handled manually at the front desk.",
+    description: "Registration cards, ID copies, signatures — all handled manually at the front desk.",
     stat: "5 forms",
     statLabel: "per guest",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop",
   },
   {
-    icon: AlertTriangle,
     title: "Data entry errors",
-    description:
-      "Staff manually typing guest details leads to errors in the PMS, affecting billing and compliance.",
+    description: "Staff manually typing guest details leads to errors in the PMS, affecting billing and compliance.",
     stat: "23%",
     statLabel: "error rate",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?q=80&w=800&auto=format&fit=crop",
   },
   {
-    icon: Users,
     title: "Overwhelmed front desk",
-    description:
-      "Peak arrival times create bottlenecks. Staff can't focus on hospitality when buried in admin.",
+    description: "Peak arrival times create bottlenecks. Staff can't focus on hospitality when buried in admin.",
     stat: "4-6pm",
-    statLabel: "daily bottleneck",
+    statLabel: "bottleneck",
+    image: "https://images.unsplash.com/photo-1606836576983-8b458e75221d?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
 export function ProblemSection() {
   return (
-    <SectionWrapper className="bg-surface relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-red-500/5 blur-[150px]" />
+    <SectionWrapper className="!py-16 sm:!py-20 relative overflow-hidden">
+      <div className="max-w-2xl mb-12">
+        <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">
+          The Problem
+        </span>
+        <h2 className="mt-4 font-display text-3xl text-secondary sm:text-4xl leading-tight">
+          Traditional check-in is{" "}
+          <span className="italic text-red-500">broken</span>
+        </h2>
+        <p className="mt-4 text-base text-muted leading-relaxed font-light">
+          Long queues, paperwork, and last-minute formalities don&apos;t belong
+          in a modern hospitality experience.
+        </p>
+      </div>
 
-      <div className="relative z-10">
-        <div className="max-w-2xl">
-          <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">
-            The Problem
-          </span>
-          <h2 className="mt-4 font-display text-3xl text-secondary sm:text-5xl leading-tight">
-            Traditional check-in is{" "}
-            <span className="italic text-red-500">broken</span>
-          </h2>
-          <p className="mt-5 text-lg text-muted leading-relaxed font-light">
-            Long queues, paperwork, and last-minute formalities don&apos;t belong
-            in a modern hospitality experience.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {problems.map((problem, i) => (
+          <motion.div
+            key={problem.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="relative rounded-2xl overflow-hidden h-64 group cursor-default"
+          >
+            {/* Background image */}
+            <img
+              src={problem.image}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
 
-        <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {problems.map((problem, i) => (
-            <motion.div
-              key={problem.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-2xl border border-gray-200/80 bg-white p-6 hover:shadow-lg hover:shadow-gray-100/80 transition-all duration-500 group"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 group-hover:bg-red-100 transition-colors">
-                  <problem.icon size={20} className="text-red-500" />
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-semibold text-red-500">
-                    {problem.stat}
-                  </p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted/60">
-                    {problem.statLabel}
-                  </p>
+            {/* Content */}
+            <div className="relative z-10 h-full flex flex-col justify-end p-5">
+              <div className="flex items-end justify-between mb-3">
+                <div>
+                  <p className="text-2xl font-semibold text-white">{problem.stat}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-white/50">{problem.statLabel}</p>
                 </div>
               </div>
-              <h3 className="mt-5 text-base font-semibold text-secondary">
+              <h3 className="text-base font-semibold text-white">
                 {problem.title}
               </h3>
-              <p className="mt-2 text-sm text-muted leading-relaxed">
+              <p className="mt-1.5 text-xs text-white/60 leading-relaxed">
                 {problem.description}
               </p>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </SectionWrapper>
   );

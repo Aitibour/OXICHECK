@@ -12,6 +12,7 @@ const testimonials = [
     role: "Front Office Manager",
     hotel: "Grand Hotel Barcelona",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop&crop=face",
   },
   {
     quote:
@@ -20,6 +21,7 @@ const testimonials = [
     role: "General Manager",
     hotel: "The Kensington London",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop&crop=face",
   },
   {
     quote:
@@ -28,6 +30,7 @@ const testimonials = [
     role: "Operations Director",
     hotel: "Palazzo Roma Collection",
     rating: 5,
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop&crop=face",
   },
 ];
 
@@ -40,8 +43,8 @@ const stats = [
 
 export function TestimonialsSection() {
   return (
-    <SectionWrapper>
-      <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+    <SectionWrapper className="!py-16 sm:!py-20">
+      <div className="flex flex-col lg:flex-row gap-14 lg:gap-20">
         {/* Left side - stats */}
         <div className="lg:w-1/3 shrink-0">
           <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">
@@ -51,7 +54,7 @@ export function TestimonialsSection() {
             Hotels <span className="italic">love</span> OxiCheck
           </h2>
 
-          <div className="mt-10 grid grid-cols-2 gap-6">
+          <div className="mt-8 grid grid-cols-2 gap-5">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -72,7 +75,7 @@ export function TestimonialsSection() {
         </div>
 
         {/* Right side - testimonials */}
-        <div className="flex-1 space-y-5">
+        <div className="flex-1 space-y-4">
           {testimonials.map((testimonial, i) => (
             <motion.div
               key={testimonial.author}
@@ -80,26 +83,28 @@ export function TestimonialsSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.12 }}
-              className="rounded-2xl border border-gray-200/80 bg-white p-7 hover:shadow-lg hover:shadow-gray-100/80 transition-all duration-500 relative group"
+              className="rounded-2xl border border-gray-200/80 bg-white p-6 hover:shadow-lg hover:shadow-gray-100/80 transition-all duration-500 relative group"
             >
-              <Quote size={20} className="text-accent/30 absolute top-6 right-6" />
+              <Quote size={18} className="text-accent/20 absolute top-5 right-5" />
 
-              <div className="flex gap-0.5">
+              <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: testimonial.rating }).map((_, j) => (
                   <Star
                     key={j}
-                    size={14}
+                    size={13}
                     className="text-accent fill-accent"
                   />
                 ))}
               </div>
-              <p className="mt-4 text-sm text-secondary/80 leading-relaxed">
+              <p className="text-sm text-secondary/80 leading-relaxed">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-navy flex items-center justify-center text-xs font-semibold text-accent">
-                  {testimonial.author.split(" ").map(n => n[0]).join("")}
-                </div>
+              <div className="mt-4 flex items-center gap-3">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.author}
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-surface"
+                />
                 <div>
                   <p className="text-sm font-semibold text-secondary">
                     {testimonial.author}

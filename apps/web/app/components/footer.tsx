@@ -22,7 +22,17 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-100 bg-white">
+    <footer className="relative overflow-hidden">
+      {/* Background image matching hero style */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2070&auto=format&fit=crop"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-navy/92" />
+      </div>
+
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
@@ -30,11 +40,11 @@ export function Footer() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-navy font-bold text-sm">
                 O
               </div>
-              <span className="text-xl font-semibold text-secondary tracking-tight">
+              <span className="text-xl font-semibold text-white tracking-tight">
                 Oxi<span className="text-accent">Check</span>
               </span>
             </Link>
-            <p className="mt-5 text-sm text-muted max-w-xs leading-relaxed font-light">
+            <p className="mt-5 text-sm text-white/35 max-w-xs leading-relaxed font-light">
               Smart Pre-Check-In Solution for Any PMS. Streamline hotel arrivals
               and elevate guest experiences.
             </p>
@@ -42,7 +52,7 @@ export function Footer() {
 
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="text-xs font-semibold text-secondary uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider">
                 {category}
               </h3>
               <ul className="mt-5 space-y-3">
@@ -50,7 +60,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-muted hover:text-primary transition-colors duration-300 font-light"
+                      className="text-sm text-white/35 hover:text-accent transition-colors duration-300 font-light"
                     >
                       {link.label}
                     </Link>
@@ -61,8 +71,8 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 border-t border-gray-100 pt-8 text-center">
-          <p className="text-xs text-muted/60 font-light">
+        <div className="mt-16 border-t border-white/10 pt-8 text-center">
+          <p className="text-xs text-white/25 font-light">
             &copy; {new Date().getFullYear()} OxiCheck. All rights reserved.
           </p>
         </div>
