@@ -1,0 +1,41 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [feature/full-stack-implementation, main]
+
+jobs:
+  deploy:
+    name: Build & Deploy Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @hotelcheckin/database exec prisma generate --schema=prisma/schema.prisma
+
+      - name: Build web app
+        run: pnpm turbo build --filter=@hotelcheckin/web...
+        env:
+          NEXT_PUBLIC_API_URL: https://hotelcheckin-api.fly.dev
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli @netlify/plugin-nextjs
+
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=apps/web/.next --prod --filter @hotelcheckin/web
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 2cde7761-253c-499f-84fd-eb1885c3135c
