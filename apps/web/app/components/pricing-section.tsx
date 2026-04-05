@@ -13,15 +13,15 @@ const plans = [
   },
   {
     name: "Professional", icon: Crown, price: "0.35", unit: "/arrival",
-    limit: "1,000 arrivals/mo", desc: "Growing hotels — best value.",
+    limit: "1,000 arrivals/mo", desc: "Growing hotels that want everything.",
     features: ["3 properties", "3 PMS integrations", "Email + SMS + WhatsApp", "Advanced ID & OCR", "Payments & upsells", "Analytics + branding", "Priority support"],
-    cta: "Start Free", highlighted: true,
+    cta: "Start Free", highlighted: true, badges: ["Popular"],
   },
   {
     name: "Business", icon: Rocket, price: "0.20", unit: "/arrival",
-    limit: "5,000 arrivals/mo", desc: "High-volume properties.",
+    limit: "5,000 arrivals/mo", desc: "High-volume properties — best value.",
     features: ["10 properties", "Unlimited PMS", "All channels", "Police reporting", "Multi-property dashboard", "API access", "Dedicated support"],
-    cta: "Start Free", highlighted: false,
+    cta: "Start Free", highlighted: false, badges: ["Best Value"],
   },
   {
     name: "Enterprise", icon: Building2, price: "Custom", unit: "",
@@ -62,17 +62,20 @@ export function PricingSection() {
               className={`rounded-2xl p-5 flex flex-col relative transition-all duration-300 ${
                 plan.highlighted
                   ? "bg-white border-2 border-accent shadow-xl shadow-accent/10 scale-[1.02] z-10"
+                  : plan.name === "Business"
+                  ? "bg-white border-2 border-primary/20 shadow-xl shadow-primary/10 z-10"
                   : "bg-white border border-gray-200/80 hover:shadow-lg"
               }`}
             >
-              {plan.highlighted && (
+              {"badges" in plan && plan.badges && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex gap-1">
-                  <span className="rounded-full bg-accent px-3 py-1 text-[9px] font-bold text-navy uppercase tracking-wider shadow-md shadow-accent/20">
-                    Popular
-                  </span>
-                  <span className="rounded-full bg-primary px-3 py-1 text-[9px] font-bold text-white uppercase tracking-wider shadow-md shadow-primary/20">
-                    Best Value
-                  </span>
+                  {(plan.badges as string[]).map((badge: string) => (
+                    <span key={badge} className={`rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-wider shadow-md ${
+                      badge === "Popular" ? "bg-accent text-navy shadow-accent/20" : "bg-primary text-white shadow-primary/20"
+                    }`}>
+                      {badge}
+                    </span>
+                  ))}
                 </div>
               )}
 
