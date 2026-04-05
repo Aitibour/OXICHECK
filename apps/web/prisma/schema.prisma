@@ -1,0 +1,288 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Multi-Tenant Hotels ────────────────────────────────────────────
+
+model Hotel {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  country   String?
+  timezone  String   @default("UTC")
+  currency  String   @default("EUR")
+  logoUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // PMS configuration
+  pmsType   PmsType?
+  pmsConfig Json?    // encrypted credentials, API keys, endpoints
+
+  // Branding & settings
+  branding Json?    // colors, logos, custom text
+  settings Json?    // check-in form fields, notification preferences
+
+  // Relations
+  users        HotelUser[]
+  reservations Reservation[]
+  templates    NotificationTemplate[]
+
+  @@map("hotels")
+}
+
+model HotelUser {
+  id           String   @id @default(cuid())
+  hotelId      String
+  email        String
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  role         UserRole @default(FRONT_DESK)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@unique([hotelId, email])
+  @@map("hotel_users")
+}
+
+// ─── Guests ─────────────────────────────────────────────────────────
+
+model Guest {
+  id             String    @id @default(cuid())
+  email          String?
+  phone          String?
+  firstName      String
+  lastName       String
+  nationality    String?
+  dateOfBirth    DateTime?
+  documentType   DocumentType?
+  documentNumber String?
+  documentExpiry DateTime?
+  idVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  reservations Reservation[]
+
+  @@map("guests")
+}
+
+// ─── Reservations ───────────────────────────────────────────────────
+
+model Reservation {
+  id               String            @id @default(cuid())
+  hotelId          String
+  guestId          String?
+  pmsReservationId String?
+  confirmationCode String?
+  checkInDate      DateTime
+  checkOutDate     DateTime
+  roomType         String?
+  roomNumber       String?
+  adultsCount      Int               @default(1)
+  childrenCount    Int               @default(0)
+  status           ReservationStatus @default(CONFIRMED)
+  syncedAt         DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  hotel          Hotel           @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  guest          Guest?          @relation(fields: [guestId], references: [id])
+  checkinSession CheckinSession?
+
+  @@unique([hotelId, pmsReservationId])
+  @@map("reservations")
+}
+
+// ─── Check-In Sessions ──────────────────────────────────────────────
+
+model CheckinSession {
+  id            String        @id @default(cuid())
+  reservationId String        @unique
+  token         String        @unique @default(cuid())
+  status        CheckinStatus @default(PENDING)
+  startedAt     DateTime?
+  completedAt   DateTime?
+
+  // Form data captured during check-in
+  formData    Json? // personal details, address, etc.
+  preferences Json? // room preferences, pillow type, etc.
+
+  // ID verification
+  idFrontUrl       String?
+  idBackUrl        String?
+  selfieUrl        String?
+  idVerificationId String? // external provider reference
+  idVerifyStatus   IdVerifyStatus @default(PENDING)
+
+  // Digital signature
+  signatureUrl String?
+  signedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservation       Reservation        @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  guestRegistration GuestRegistration?
+  payments          Payment[]
+
+  @@map("checkin_sessions")
+}
+
+// ─── Compliance & Police Reporting ──────────────────────────────────
+
+model GuestRegistration {
+  id               String       @id @default(cuid())
+  checkinSessionId String       @unique
+  countryCode      String       // country where reporting is required
+  reportStatus     ReportStatus @default(PENDING)
+  reportedAt       DateTime?
+  reportReference  String?      // reference from police system
+  reportData       Json?        // submitted data
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  checkinSession CheckinSession @relation(fields: [checkinSessionId], references: [id], onDelete: Cascade)
+
+  @@map("guest_registrations")
+}
+
+// ─── Payments ───────────────────────────────────────────────────────
+
+model Payment {
+  id               String        @id @default(cuid())
+  checkinSessionId String
+  type             PaymentType
+  amount           Float
+  currency         String        @default("EUR")
+  stripePaymentId  String?
+  status           PaymentStatus @default(PENDING)
+  description      String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  checkinSession CheckinSession @relation(fields: [checkinSessionId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// ─── Notification Templates ─────────────────────────────────────────
+
+model NotificationTemplate {
+  id       String           @id @default(cuid())
+  hotelId  String
+  type     NotificationType
+  channel  NotificationChannel
+  subject  String?
+  body     String
+  language String           @default("en")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@unique([hotelId, type, channel, language])
+  @@map("notification_templates")
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────
+
+enum PmsType {
+  OPERA
+  MEWS
+  CLOUDBEDS
+  HOTELOGIX
+  RMS_CLOUD
+  LITTLE_HOTELIER
+  APALEO
+  STAYNTOUCH
+  GUESTLINE
+  PROTEL
+  WEBREZPRO
+  GENERIC_WEBHOOK
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  FRONT_DESK
+  READ_ONLY
+}
+
+enum DocumentType {
+  PASSPORT
+  NATIONAL_ID
+  DRIVERS_LICENSE
+}
+
+enum ReservationStatus {
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum CheckinStatus {
+  PENDING
+  IN_PROGRESS
+  AWAITING_VERIFICATION
+  COMPLETED
+  EXPIRED
+}
+
+enum IdVerifyStatus {
+  PENDING
+  IN_PROGRESS
+  VERIFIED
+  FAILED
+  MANUAL_REVIEW
+}
+
+enum ReportStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+enum PaymentType {
+  TOURIST_TAX
+  SECURITY_DEPOSIT
+  UPSELL
+  EARLY_CHECKIN
+  LATE_CHECKOUT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum NotificationType {
+  BOOKING_CONFIRMATION
+  CHECKIN_REMINDER_48H
+  CHECKIN_REMINDER_24H
+  CHECKIN_REMINDER_2H
+  CHECKIN_COMPLETE
+  PAYMENT_RECEIPT
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
