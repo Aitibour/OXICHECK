@@ -1,0 +1,5 @@
+*.mp4
+.netlify
+.github
+migration.sql
+docs
