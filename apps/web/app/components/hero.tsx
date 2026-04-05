@@ -7,18 +7,23 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 export function Hero() {
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
+      {/* Video background */}
       <div className="absolute inset-0 -z-10">
-        <img
-          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
-          alt=""
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
           className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/75 to-navy/95" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy/40 to-transparent" />
+          poster="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920&auto=format&fit=crop"
+        >
+          <source src="/bg-video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/70 to-navy/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/50 to-transparent" />
       </div>
 
       <div className="absolute top-1/4 right-[10%] w-72 h-72 rounded-full bg-accent/10 blur-[120px]" />
-      <div className="absolute bottom-1/4 left-[5%] w-96 h-96 rounded-full bg-primary/10 blur-[140px]" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8 w-full">
         <div className="max-w-3xl">
@@ -75,7 +80,7 @@ export function Hero() {
               { value: "500+", label: "Hotels trust us" },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-center gap-3">
-                {i > 0 && <div className="h-8 w-px bg-white/15 -ml-5 mr-0" />}
+                {i > 0 && <div className="h-8 w-px bg-white/15 -ml-5" />}
                 <div>
                   <p className="text-xl font-semibold text-accent">{stat.value}</p>
                   <p className="text-white/40 text-[10px] font-medium uppercase tracking-wider mt-0.5">{stat.label}</p>

@@ -3,72 +3,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Smartphone,
-  ScanFace,
-  PenTool,
-  Settings2,
-  CreditCard,
-  Globe,
-  Bell,
-  BarChart3,
-  Shield,
+  Smartphone, ScanFace, PenTool, Settings2, CreditCard,
+  Globe, Bell, BarChart3, Shield,
 } from "lucide-react";
 
 const features = [
-  {
-    icon: Smartphone,
-    title: "Mobile-First Check-In",
-    description: "No app download required. Guests open a link on any device and complete check-in in under 4 minutes. Responsive design adapts to every screen size.",
-    visual: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: ScanFace,
-    title: "ID Verification & OCR",
-    description: "Automatic passport and ID scanning extracts guest data instantly. Facial recognition matches the document photo to a live selfie for fraud prevention.",
-    visual: "https://images.unsplash.com/photo-1633265486064-086b219458ec?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: PenTool,
-    title: "Digital Registration",
-    description: "Guests sign the registration card on their phone screen. Legally binding digital signatures replace paper forms entirely — fully compliant in 30+ countries.",
-    visual: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: Settings2,
-    title: "Any PMS Integration",
-    description: "Two-way sync with Opera, Mews, Cloudbeds, and 12+ other platforms. Reservations flow in, check-in status flows back. Zero manual data entry.",
-    visual: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: CreditCard,
-    title: "Payments & Upsells",
-    description: "Collect tourist tax, security deposits, and pre-authorize cards before arrival. Offer room upgrades, early check-in, and spa packages — all automated.",
-    visual: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: Globe,
-    title: "Multi-Language",
-    description: "Check-in forms automatically adapt to 25+ languages based on guest nationality. Regional compliance requirements are handled per destination country.",
-    visual: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: Bell,
-    title: "Smart Notifications",
-    description: "Automated reminders via email, SMS, and WhatsApp — timed based on the guest's arrival schedule. Configurable triggers at 48h, 24h, and 2h before check-in.",
-    visual: "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics Dashboard",
-    description: "Real-time completion rates, average check-in duration, and step-by-step drop-off analysis. Know exactly where guests abandon the flow and optimize.",
-    visual: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    icon: Shield,
-    title: "GDPR & Compliance",
-    description: "Automatic police reporting for Spain, Italy, and Portugal. Data retention policies, consent management, and right-to-deletion — all built in from day one.",
-    visual: "https://images.unsplash.com/photo-1563986768609-322da13575f2?q=80&w=600&auto=format&fit=crop",
-  },
+  { icon: Smartphone, title: "Mobile Check-In", desc: "No app. Any device. Under 4 minutes.", detail: "Responsive design adapts to every screen. Guests open a link and complete check-in instantly." },
+  { icon: ScanFace, title: "ID & OCR", desc: "Passport scanning + facial match.", detail: "Automatic data extraction from 5,000+ document types. Biometric liveness detection prevents fraud." },
+  { icon: PenTool, title: "Digital Signature", desc: "Paperless. Legally compliant.", detail: "Guests sign on their phone screen. Binding digital signatures replace paper in 30+ countries." },
+  { icon: Settings2, title: "Any PMS", desc: "Opera, Mews, Cloudbeds & more.", detail: "Two-way sync. Reservations flow in, check-in status flows back. Zero manual data entry." },
+  { icon: CreditCard, title: "Payments", desc: "Tax, deposits & upsells.", detail: "Collect tourist tax, pre-authorize cards, offer room upgrades — all automated before arrival." },
+  { icon: Globe, title: "Multi-Language", desc: "25+ languages auto-detected.", detail: "Forms adapt based on guest nationality. Regional compliance handled per destination country." },
+  { icon: Bell, title: "Notifications", desc: "Email, SMS, WhatsApp.", detail: "Automated reminders timed to the guest's arrival schedule. Configurable triggers." },
+  { icon: BarChart3, title: "Analytics", desc: "Rates, timing & drop-offs.", detail: "Real-time completion rates, average duration, and step-by-step drop-off analysis." },
+  { icon: Shield, title: "GDPR", desc: "Police reporting built in.", detail: "Auto police reporting for Spain, Italy, Portugal. Data retention and consent management included." },
 ];
 
 export function FeaturesSection() {
@@ -76,108 +24,60 @@ export function FeaturesSection() {
   const current = features[active]!;
 
   return (
-    <section id="features" className="py-16 sm:py-20 bg-surface relative overflow-hidden">
+    <section id="features" className="py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-xl mx-auto mb-12"
-        >
-          <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">
-            Features
-          </span>
-          <h2 className="mt-4 font-display text-3xl text-secondary sm:text-4xl leading-tight">
-            Everything you need for <span className="italic">seamless</span> check-in
+        <div className="text-center mb-8">
+          <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">Features</span>
+          <h2 className="mt-3 font-display text-2xl text-secondary sm:text-3xl">
+            Everything for <span className="italic">seamless</span> check-in
           </h2>
-        </motion.div>
-
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left - feature list */}
-          <div className="lg:w-[45%] space-y-1">
-            {features.map((feature, i) => {
-              const isActive = i === active;
-              return (
-                <motion.button
-                  key={feature.title}
-                  onClick={() => setActive(i)}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: i * 0.04 }}
-                  className={`w-full text-left flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-400 group ${
-                    isActive
-                      ? "bg-white shadow-lg shadow-gray-200/60 border border-gray-200/80"
-                      : "hover:bg-white/60"
-                  }`}
-                >
-                  <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${
-                    isActive ? "bg-accent/15" : "bg-primary/[0.07] group-hover:bg-primary/[0.12]"
-                  }`}>
-                    <feature.icon size={20} className={`transition-colors duration-300 ${
-                      isActive ? "text-accent" : "text-primary"
-                    }`} />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${
-                      isActive ? "text-secondary" : "text-secondary/70"
-                    }`}>
-                      {feature.title}
-                    </h3>
-                    {isActive && (
-                      <motion.p
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="mt-1 text-xs text-muted leading-relaxed"
-                      >
-                        {feature.description}
-                      </motion.p>
-                    )}
-                  </div>
-                  {isActive && (
-                    <motion.div
-                      layoutId="feature-indicator"
-                      className="ml-auto w-1 h-8 rounded-full bg-accent shrink-0"
-                    />
-                  )}
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Right - visual */}
-          <div className="lg:w-[55%] relative">
-            <div className="sticky top-24 rounded-2xl overflow-hidden border border-gray-200/80 shadow-2xl shadow-gray-200/40 aspect-[4/3] bg-white">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={active}
-                  src={current.visual}
-                  alt={current.title}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-full h-full object-cover"
-                />
-              </AnimatePresence>
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-navy/80 to-transparent p-6">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-white font-semibold text-sm">{current.title}</p>
-                    <p className="text-white/60 text-xs mt-1 line-clamp-2">{current.description}</p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
         </div>
+
+        <div className="grid grid-cols-3 sm:grid-cols-9 gap-2">
+          {features.map((f, i) => {
+            const isActive = i === active;
+            return (
+              <motion.button
+                key={f.title}
+                onClick={() => setActive(i)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                className={`flex flex-col items-center text-center p-3 rounded-xl transition-all duration-300 ${
+                  isActive ? "bg-accent/10 border border-accent/30 shadow-md shadow-accent/10" : "hover:bg-surface border border-transparent"
+                }`}
+              >
+                <div className={`h-10 w-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                  isActive ? "bg-accent text-navy" : "bg-surface text-primary"
+                }`}>
+                  <f.icon size={18} />
+                </div>
+                <p className={`mt-2 text-[10px] font-semibold leading-tight transition-colors ${
+                  isActive ? "text-accent" : "text-secondary/70"
+                }`}>{f.title}</p>
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Expanded detail */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 rounded-xl bg-surface border border-gray-200/80 p-5 flex items-center gap-5"
+          >
+            <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+              <current.icon size={22} className="text-accent" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-secondary">{current.title} — {current.desc}</p>
+              <p className="text-xs text-muted mt-1 leading-relaxed">{current.detail}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
