@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   { quote: "Check-in time reduced by 70%. No more queues at peak times.", author: "Amira Bensalem", role: "Front Office", hotel: "Royal Thalassa, Tunisia", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&auto=format&fit=crop&crop=face" },
@@ -55,56 +55,55 @@ export function TestimonialsSection() {
     return () => clearInterval(timer);
   }, []);
 
-  // Show 3 testimonials in a sliding window
   const visible = [0, 1, 2].map(offset => testimonials[(page + offset) % testimonials.length]!);
 
   return (
-    <section className="py-12 sm:py-14 bg-surface overflow-hidden">
+    <section className="py-8 sm:py-10 bg-surface overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* Stats */}
-          <div className="lg:w-1/4 shrink-0">
-            <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">Trusted</span>
-            <h2 className="mt-2 font-display text-2xl text-secondary sm:text-3xl leading-tight">
+        <div className="flex flex-col lg:flex-row gap-6 items-center">
+          {/* Stats - compact */}
+          <div className="lg:w-1/5 shrink-0 text-center lg:text-left">
+            <span className="text-[10px] font-semibold text-accent uppercase tracking-[0.2em]">Trusted</span>
+            <h2 className="mt-1 font-display text-xl text-secondary sm:text-2xl leading-tight">
               Hotels <span className="italic">love</span> us
             </h2>
-            <div className="mt-6 grid grid-cols-2 gap-4">
+            <div className="mt-3 grid grid-cols-4 lg:grid-cols-2 gap-2">
               {[
                 { value: 70, suffix: "%", label: "Faster" },
-                { value: 95, suffix: "%", label: "Completion" },
+                { value: 95, suffix: "%", label: "Complete" },
                 { value: 500, suffix: "+", label: "Hotels" },
                 { value: 2, suffix: "M+", label: "Check-ins" },
               ].map(s => (
                 <div key={s.label}>
-                  <p className="text-2xl font-semibold text-navy"><CountUp target={s.value} suffix={s.suffix} /></p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted font-medium">{s.label}</p>
+                  <p className="text-lg font-semibold text-navy"><CountUp target={s.value} suffix={s.suffix} /></p>
+                  <p className="text-[8px] uppercase tracking-wider text-muted font-medium">{s.label}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Testimonials carousel */}
-          <div className="flex-1">
+          {/* Testimonials carousel - compact */}
+          <div className="flex-1 min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={page}
-                initial={{ opacity: 0, x: 40 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
               >
                 {visible.map((t) => (
-                  <div key={t.author} className="rounded-xl border border-gray-200/80 bg-white p-4 transition-shadow hover:shadow-md">
-                    <div className="flex gap-0.5 mb-2">
-                      {[1,2,3,4,5].map(j => <Star key={j} size={10} className="text-accent fill-accent" />)}
+                  <div key={t.author} className="rounded-lg border border-gray-200/80 bg-white p-3 transition-shadow hover:shadow-md">
+                    <div className="flex gap-0.5 mb-1">
+                      {[1,2,3,4,5].map(j => <Star key={j} size={8} className="text-accent fill-accent" />)}
                     </div>
-                    <p className="text-xs text-secondary/80 leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
-                    <div className="mt-3 flex items-center gap-2">
-                      <img src={t.image} alt={t.author} className="h-7 w-7 rounded-full object-cover" />
+                    <p className="text-[10px] text-secondary/80 leading-relaxed line-clamp-2">&ldquo;{t.quote}&rdquo;</p>
+                    <div className="mt-2 flex items-center gap-1.5">
+                      <img src={t.image} alt={t.author} className="h-5 w-5 rounded-full object-cover" />
                       <div>
-                        <p className="text-[11px] font-semibold text-secondary">{t.author}</p>
-                        <p className="text-[9px] text-muted">{t.hotel}</p>
+                        <p className="text-[9px] font-semibold text-secondary">{t.author}</p>
+                        <p className="text-[8px] text-muted">{t.hotel}</p>
                       </div>
                     </div>
                   </div>
@@ -113,13 +112,13 @@ export function TestimonialsSection() {
             </AnimatePresence>
 
             {/* Dots */}
-            <div className="mt-4 flex justify-center gap-1.5">
+            <div className="mt-2 flex justify-center gap-1">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setPage(i)}
-                  className={`h-1 rounded-full transition-all duration-400 ${
-                    i === page ? "w-6 bg-accent" : "w-1 bg-gray-200"
+                  className={`h-0.5 rounded-full transition-all duration-400 ${
+                    i === page ? "w-4 bg-accent" : "w-1 bg-gray-200"
                   }`}
                 />
               ))}
