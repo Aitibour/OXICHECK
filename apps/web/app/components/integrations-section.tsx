@@ -21,16 +21,16 @@ const pms = [
 
 export function IntegrationsSection() {
   return (
-    <section id="integrations" className="py-12 sm:py-14">
+    <section id="integrations" className="py-10 sm:py-12 bg-[#0e1526]">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
           <div>
-            <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">Integrations</span>
-            <h2 className="mt-2 font-display text-2xl text-secondary sm:text-3xl">
-              Works with <span className="italic">any</span> PMS
+            <span className="text-[10px] font-semibold text-accent uppercase tracking-[0.2em]">Integrations</span>
+            <h2 className="mt-2 font-display text-xl text-white sm:text-2xl">
+              Works with <span className="italic text-accent">any</span> PMS
             </h2>
           </div>
-          <Link href="/integrations" className="group inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary-dark transition-colors">
+          <Link href="/integrations" className="group inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent-light transition-colors">
             View all <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -44,12 +44,12 @@ export function IntegrationsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.03 }}
               whileHover={{ scale: 1.05, y: -2 }}
-              className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white px-4 py-2 hover:shadow-md hover:border-gray-300 transition-all duration-300 cursor-default"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-default"
             >
               <div className="h-5 w-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white" style={{ backgroundColor: p.color }}>
                 {p.name.split(" ").map(w => w[0]).join("")}
               </div>
-              <span className="text-xs font-medium text-secondary">{p.name}</span>
+              <span className="text-xs font-medium text-white/80">{p.name}</span>
             </motion.div>
           ))}
         </div>

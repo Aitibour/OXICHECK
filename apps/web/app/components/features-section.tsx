@@ -24,12 +24,12 @@ export function FeaturesSection() {
   const current = features[active]!;
 
   return (
-    <section id="features" className="py-12 sm:py-16">
+    <section id="features" className="py-12 sm:py-16 bg-[#0e1526]">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center mb-8">
           <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em]">Features</span>
-          <h2 className="mt-3 font-display text-2xl text-secondary sm:text-3xl">
-            Everything for <span className="italic">seamless</span> check-in
+          <h2 className="mt-3 font-display text-2xl text-white sm:text-3xl">
+            Everything for <span className="italic text-accent">seamless</span> check-in
           </h2>
         </div>
 
@@ -43,23 +43,22 @@ export function FeaturesSection() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 className={`flex flex-col items-center text-center p-3 rounded-xl transition-all duration-300 ${
-                  isActive ? "bg-accent/10 border border-accent/30 shadow-md shadow-accent/10" : "hover:bg-surface border border-transparent"
+                  isActive ? "bg-accent/15 border border-accent/30 shadow-md shadow-accent/10" : "hover:bg-white/5 border border-transparent"
                 }`}
               >
                 <div className={`h-10 w-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                  isActive ? "bg-accent text-navy" : "bg-surface text-primary"
+                  isActive ? "bg-accent text-navy" : "bg-white/10 text-white/60"
                 }`}>
                   <f.icon size={18} />
                 </div>
                 <p className={`mt-2 text-[10px] font-semibold leading-tight transition-colors ${
-                  isActive ? "text-accent" : "text-secondary/70"
+                  isActive ? "text-accent" : "text-white/50"
                 }`}>{f.title}</p>
               </motion.button>
             );
           })}
         </div>
 
-        {/* Expanded detail */}
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -67,14 +66,14 @@ export function FeaturesSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="mt-4 rounded-xl bg-surface border border-gray-200/80 p-5 flex items-center gap-5"
+            className="mt-4 rounded-xl bg-white/5 border border-white/10 p-5 flex items-center gap-5"
           >
-            <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+            <div className="h-12 w-12 rounded-xl bg-accent/15 flex items-center justify-center shrink-0">
               <current.icon size={22} className="text-accent" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-secondary">{current.title} — {current.desc}</p>
-              <p className="text-xs text-muted mt-1 leading-relaxed">{current.detail}</p>
+              <p className="text-sm font-semibold text-white">{current.title} — {current.desc}</p>
+              <p className="text-xs text-white/50 mt-1 leading-relaxed">{current.detail}</p>
             </div>
           </motion.div>
         </AnimatePresence>
