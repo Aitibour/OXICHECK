@@ -12,8 +12,19 @@ const stats = [
 
 export function GreenSection() {
   return (
-    <section className="py-10 sm:py-12 bg-gradient-to-br from-emerald-950 via-[#0a1a12] to-[#0e1526] overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section className="py-10 sm:py-12 relative overflow-hidden">
+      {/* Nature background image */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1920&auto=format&fit=crop"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#042a1a]/95 via-[#042a1a]/90 to-[#042a1a]/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#042a1a]/95 to-transparent" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-8">
           {/* Left content */}
           <div className="lg:w-1/2">
@@ -39,7 +50,7 @@ export function GreenSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="rounded-lg bg-white/5 border border-white/10 p-3"
+                  className="rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-3"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <s.icon size={14} className="text-emerald-400" />
@@ -61,15 +72,14 @@ export function GreenSection() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              {/* Paper stack being replaced */}
               <div className="relative w-72 h-72">
-                {/* Glowing circle */}
+                {/* Glowing circles */}
                 <div className="absolute inset-8 rounded-full bg-emerald-500/10 border border-emerald-500/20" />
                 <div className="absolute inset-16 rounded-full bg-emerald-500/15 border border-emerald-500/25" />
 
                 {/* Center icon */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="h-20 w-20 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                  <div className="h-20 w-20 rounded-2xl bg-emerald-500/20 backdrop-blur-sm border border-emerald-500/30 flex items-center justify-center">
                     <Leaf size={36} className="text-emerald-400" />
                   </div>
                 </div>
@@ -78,7 +88,7 @@ export function GreenSection() {
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-4 right-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-2"
+                  className="absolute top-4 right-4 rounded-lg bg-black/30 backdrop-blur-md border border-white/10 px-3 py-2"
                 >
                   <div className="flex items-center gap-1.5">
                     <TrendingDown size={12} className="text-emerald-400" />
@@ -89,7 +99,7 @@ export function GreenSection() {
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-4 left-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-2"
+                  className="absolute bottom-4 left-4 rounded-lg bg-black/30 backdrop-blur-md border border-white/10 px-3 py-2"
                 >
                   <div className="flex items-center gap-1.5">
                     <FileX2 size={12} className="text-emerald-400" />
@@ -100,7 +110,7 @@ export function GreenSection() {
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-12 left-0 rounded-lg bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-2"
+                  className="absolute top-12 left-0 rounded-lg bg-black/30 backdrop-blur-md border border-white/10 px-3 py-2"
                 >
                   <div className="flex items-center gap-1.5">
                     <TreePine size={12} className="text-emerald-400" />
